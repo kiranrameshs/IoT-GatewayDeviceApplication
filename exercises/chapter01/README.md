@@ -24,9 +24,8 @@ URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/t
 
 ### Unit Tests Executed
 
-GatewayDeviceAppTest (1/1)
-SystemPerformanceManagerTest (1/1)
 ConfigUtilTest (7/7)
 
 ### Integration Tests Executed
-
+GatewayDeviceAppTest (1/1)
+SystemPerformanceManagerTest (1/1)
