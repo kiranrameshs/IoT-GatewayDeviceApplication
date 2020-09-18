@@ -18,7 +18,6 @@ When the GatewayDeviceApp.java from programmingtheiot.gda.app folder is run, thi
 URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter01
 
 ### UML Design Diagram(s)
-![CDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter01/uml/lab1_CDA.png?raw=true)
 ![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter01/uml/lab1_GDA.png?raw=true)
 
 
