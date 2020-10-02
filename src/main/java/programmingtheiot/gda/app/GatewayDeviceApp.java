@@ -8,11 +8,13 @@
  * provided within in order to meet the needs of your specific
  * Programming the Internet of Things project.
  */ 
-
+//run this app
 package programmingtheiot.gda.app;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import programmingtheiot.gda.system.SystemPerformanceManager;
 
 /**
  * Main GDA application.
@@ -26,10 +28,10 @@ public class GatewayDeviceApp
 		Logger.getLogger(GatewayDeviceApp.class.getName());
 	
 	public static final long DEFAULT_TEST_RUNTIME = 60000L;
+
+	private SystemPerformanceManager sysPerfManager;
 	
 	// private var's
-	
-	
 	// constructors
 	
 	/**
@@ -42,6 +44,7 @@ public class GatewayDeviceApp
 		super();
 		
 		_Logger.info("Initializing GDA...");
+		this.sysPerfManager = new SystemPerformanceManager(10);
 		
 		parseArgs(args);
 	}
@@ -84,6 +87,7 @@ public class GatewayDeviceApp
 			// TODO: Your code here
 			
 			_Logger.info("GDA started successfully.");
+			sysPerfManager.startManager();
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to start GDA. Exiting.", e);
 			
@@ -102,7 +106,7 @@ public class GatewayDeviceApp
 		
 		try {
 			// TODO: Your code here
-			
+			sysPerfManager.stopManager();
 			_Logger.log(Level.INFO, "GDA stopped successfully with exit code {0}.", code);
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to cleanly stop GDA. Exiting.", e);

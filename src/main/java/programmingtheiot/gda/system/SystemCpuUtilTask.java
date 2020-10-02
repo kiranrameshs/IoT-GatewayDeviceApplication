@@ -34,7 +34,8 @@ public class SystemCpuUtilTask extends BaseSystemUtilTask
 	@Override
 	protected float getSystemUtil()
 	{
-		return 0.0f;
+		
+		return (float) ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
 	}
 	
 }
