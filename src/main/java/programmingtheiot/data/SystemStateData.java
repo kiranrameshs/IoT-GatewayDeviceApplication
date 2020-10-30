@@ -42,11 +42,14 @@ public class SystemStateData extends BaseIotData implements Serializable
     private List<SensorData> sensorDataList = null;
     
     
+    
 	// constructors
 	
 	public SystemStateData()
 	{
 		super();
+		sysPerfDataList = new ArrayList<>();
+		sensorDataList = new ArrayList<>();
 	}
 	
 	
@@ -54,41 +57,63 @@ public class SystemStateData extends BaseIotData implements Serializable
 	
 	public boolean addSensorData(SensorData data)
 	{
-		return false;
+		if(this.sensorDataList == null || data == null) {
+			return false;
+		}
+		sensorDataList.add(data);
+		return true;
+		
 	}
 	
 	public boolean addSystemPerformanceData(SystemPerformanceData data)
 	{
-		return false;
+		if(this.sysPerfDataList == null || data == null) {
+			return false;
+		}
+		sysPerfDataList.add(data);
+		return true;
 	}
 	
 	public int getActionCommand()
 	{
-		return 0;
+		return this.actionCmd;
 	}
 	
 	public String getLocation()
 	{
-		return null;
+		return this.location;
 	}
 	
 	public List<SensorData> getSensorDataList()
 	{
-		return null;
+		return this.sensorDataList;
 	}
 	
 	public List<SystemPerformanceData> getSystemPerformanceDataList()
 	{
-		return null;
+		return this.sysPerfDataList;
 	}
 	
 	public void setActionCommand(int actionCmd)
 	{
+		this.actionCmd = actionCmd;
 	}
 	
 	public void setLocation(String location)
 	{
+		this.location = location;
 	}
+	
+	public void updateData(SystemStateData data)
+	{
+		
+		super.setName(data.getName());
+		super.setStateData(data.getStateData());
+		super.setStatusCode(data.getStatusCode());
+		this.setActionCommand(data.getActionCommand());
+		this.setLocation(data.getLocation());
+	}
+	
 	
 	
 	// protected methods

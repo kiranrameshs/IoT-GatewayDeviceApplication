@@ -30,6 +30,7 @@ public class GatewayDeviceApp
 	public static final long DEFAULT_TEST_RUNTIME = 60000L;
 
 	private SystemPerformanceManager sysPerfManager;
+	private DeviceDataManager devDataManager;
 	
 	// private var's
 	// constructors
@@ -45,6 +46,7 @@ public class GatewayDeviceApp
 		
 		_Logger.info("Initializing GDA...");
 		this.sysPerfManager = new SystemPerformanceManager(10);
+		this.devDataManager = new DeviceDataManager();
 		
 		parseArgs(args);
 	}
@@ -87,7 +89,7 @@ public class GatewayDeviceApp
 			// TODO: Your code here
 			
 			_Logger.info("GDA started successfully.");
-			sysPerfManager.startManager();
+			devDataManager.startManager();
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to start GDA. Exiting.", e);
 			
@@ -106,7 +108,7 @@ public class GatewayDeviceApp
 		
 		try {
 			// TODO: Your code here
-			sysPerfManager.stopManager();
+			devDataManager.stopManager();
 			_Logger.log(Level.INFO, "GDA stopped successfully with exit code {0}.", code);
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to cleanly stop GDA. Exiting.", e);

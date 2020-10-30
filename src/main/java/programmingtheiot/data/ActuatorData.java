@@ -25,7 +25,8 @@ public class ActuatorData extends BaseIotData implements Serializable
 	
 	// private var's
 	
-    
+    private float val;
+    private int command;
     
 	// constructors
 	
@@ -36,6 +37,8 @@ public class ActuatorData extends BaseIotData implements Serializable
 	public ActuatorData()
 	{
 		super();
+		val = 0.0f;
+		command = 0;
 	}
 	
 	
@@ -43,20 +46,32 @@ public class ActuatorData extends BaseIotData implements Serializable
 	
 	public int getCommand()
 	{
-		return 0;
+		return this.command;
 	}
 	
 	public float getValue()
 	{
-		return 0.0f;
+		return this.val;
 	}
 	
 	public void setCommand(int command)
 	{
+		this.command = command;
 	}
 	
 	public void setValue(float val)
 	{
+		this.val = val;
+	}
+	
+	public void updateData(ActuatorData data)
+	{
+		
+		super.setName(data.getName());
+		super.setStateData(data.getStateData());
+		super.setStatusCode(data.getStatusCode());
+		this.setValue(data.getValue());
+		this.setCommand(data.getCommand());
 	}
 	
 	
@@ -67,6 +82,7 @@ public class ActuatorData extends BaseIotData implements Serializable
 	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
+		
 	}
 	
 }
