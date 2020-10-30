@@ -38,21 +38,17 @@ import programmingtheiot.gda.system.SystemPerformanceManager;
 public class DeviceDataManager implements IDataMessageListener
 {
 	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(DeviceDataManager.class.getName());
 	
 	// private var's
 	private SystemPerformanceManager sysPerfManager;
-	
 	private boolean enableMqttClient = true;
 	private boolean enableCoapServer = false;
 	private boolean enableCloudClient = false;
 	private boolean enableSmtpClient = false;
 	private boolean enablePersistenceClient = false;
-	
 	private boolean isPersistentClientActive = false;
-	
 	private IPubSubClient mqttClient = null;
 	private IPubSubClient cloudClient = null;
 	private IPersistenceClient persistenceClient = null;
@@ -60,7 +56,6 @@ public class DeviceDataManager implements IDataMessageListener
 	private CoapServerGateway coapServer = null;
 	
 	// constructors
-	
 	public DeviceDataManager()
 	{
 		super();
@@ -91,9 +86,11 @@ public class DeviceDataManager implements IDataMessageListener
 		this.sysPerfManager = new SystemPerformanceManager(10);
 	}
 	
-	
 	// public methods
-	// Handles Actuator command response by storing data 
+	
+	/**
+	 * Handles Actuator command response by storing data
+	 */
 	@Override
 	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data)
 	{
@@ -112,7 +109,10 @@ public class DeviceDataManager implements IDataMessageListener
 		
 		return false;
 	}
-	// handles incoming message by coverting message to Actuator ir System state data
+	
+	/**
+	 * Handles incoming message by coverting message to Actuator ir System state data
+	**/
 	@Override
 	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
 	{
@@ -122,14 +122,16 @@ public class DeviceDataManager implements IDataMessageListener
 			ActuatorData ad = dataUtil.jsonToActuatorData(msg);
 			handleIncomingDataAnalysis(resourceName,ad);
 		}
-		
 		catch(Exception ex) {
 			SystemStateData sd = dataUtil.jsonToSystemStateData(msg);
 			handleIncomingDataAnalysis(resourceName,sd);
 		}
 		return false;
 	}
-	// handles sensor message and store the data
+	
+	/**
+	 * Handles sensor message and store the data
+	**/ 
 	@Override
 	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data)
 	{
@@ -139,7 +141,6 @@ public class DeviceDataManager implements IDataMessageListener
 			if(isPersistentClientActive)
 			{
 				this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
-				//String jsonData = dataUtil.sensorDataToJson(data);
 				return true;
 			}
 				
@@ -152,7 +153,6 @@ public class DeviceDataManager implements IDataMessageListener
 
 	/**
 	 * handles system performance data by storing it and converting to json
-	 * 
 	 */
 	@Override
 	public boolean handleSystemPerformanceMessage(ResourceNameEnum resourceName, SystemPerformanceData data)
@@ -166,7 +166,6 @@ public class DeviceDataManager implements IDataMessageListener
 				//String jsonData = dataUtil.systemPerformanceDataToJson(data);
 				return true;
 			}
-				
 		}
 		catch(Exception ex) {
 			_Logger.info("Exception occured: " + ex.getMessage());
@@ -176,7 +175,6 @@ public class DeviceDataManager implements IDataMessageListener
 	
 	/**
 	 * starts data device manager.
-	 * 
 	 */
 	public void startManager()
 	{
@@ -215,7 +213,6 @@ public class DeviceDataManager implements IDataMessageListener
 	
 	/**
 	 * stops data device manager.
-	 * 
 	 */
 	public void stopManager()
 	{
@@ -252,13 +249,11 @@ public class DeviceDataManager implements IDataMessageListener
 		}
 	}
 
-	
 	// private methods
 	
 	/**
 	 * Initializes the enabled connections. This will NOT start them, but only create the
 	 * instances that will be used in the {@link #startManager() and #stopManager()) methods.
-	 * 
 	 */
 	private void initConnections()
 	{

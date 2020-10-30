@@ -52,7 +52,6 @@ public class SensorData extends BaseIotData implements Serializable
 	
 	public void updateData(SensorData data)
 	{
-		
 		super.setName(data.getName());
 		super.setStateData(data.getStateData());
 		super.setStatusCode(data.getStatusCode());

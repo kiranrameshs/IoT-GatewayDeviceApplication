@@ -23,7 +23,6 @@ import programmingtheiot.gda.system.SystemPerformanceManager;
 public class GatewayDeviceApp
 {
 	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(GatewayDeviceApp.class.getName());
 	
@@ -33,6 +32,7 @@ public class GatewayDeviceApp
 	private DeviceDataManager devDataManager;
 	
 	// private var's
+	
 	// constructors
 	
 	/**
@@ -43,11 +43,9 @@ public class GatewayDeviceApp
 	public GatewayDeviceApp(String[] args)
 	{
 		super();
-		
 		_Logger.info("Initializing GDA...");
 		this.sysPerfManager = new SystemPerformanceManager(10);
 		this.devDataManager = new DeviceDataManager();
-		
 		parseArgs(args);
 	}
 	
@@ -62,15 +60,12 @@ public class GatewayDeviceApp
 	public static void main(String[] args)
 	{
 		GatewayDeviceApp gwApp = new GatewayDeviceApp(args);
-		
 		gwApp.startApp();
-		
 		try {
 			Thread.sleep(DEFAULT_TEST_RUNTIME);
 		} catch (InterruptedException e) {
 			// ignore
 		}
-		
 		gwApp.stopApp(0);
 	}
 	
@@ -84,15 +79,11 @@ public class GatewayDeviceApp
 	public void startApp()
 	{
 		_Logger.info("Starting GDA...");
-		
 		try {
-			// TODO: Your code here
-			
 			_Logger.info("GDA started successfully.");
 			devDataManager.startManager();
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to start GDA. Exiting.", e);
-			
 			stopApp(-1);
 		}
 	}
@@ -105,18 +96,14 @@ public class GatewayDeviceApp
 	public void stopApp(int code)
 	{
 		_Logger.info("Stopping GDA...");
-		
 		try {
-			// TODO: Your code here
 			devDataManager.stopManager();
 			_Logger.log(Level.INFO, "GDA stopped successfully with exit code {0}.", code);
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to cleanly stop GDA. Exiting.", e);
 		}
-		
 		System.exit(code);
 	}
-	
 	
 	// private methods
 	
@@ -130,8 +117,6 @@ public class GatewayDeviceApp
 	private void initConfig(String configFile)
 	{
 		_Logger.log(Level.INFO, "Attempting to load configuration: {0}", (configFile != null ? configFile : "Default."));
-		
-		// TODO: Your code here
 	}
 	
 	/**
@@ -149,21 +134,16 @@ public class GatewayDeviceApp
 	private void parseArgs(String[] args)
 	{
 		String configFile = null;
-		
 		if (args != null) {
 			_Logger.log(Level.INFO, "Parsing {0} command line args.", args.length);
-			
 			for (String arg : args) {
 				if (arg != null) {
 					arg = arg.trim();
-					
-					// TODO: Your code here
 				}
 			}
 		} else {
 			_Logger.info("No command line args to parse.");
 		}
-		
 		initConfig(configFile);
 	}
 

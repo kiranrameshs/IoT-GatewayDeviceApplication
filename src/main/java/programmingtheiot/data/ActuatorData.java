@@ -66,7 +66,6 @@ public class ActuatorData extends BaseIotData implements Serializable
 	
 	public void updateData(ActuatorData data)
 	{
-		
 		super.setName(data.getName());
 		super.setStateData(data.getStateData());
 		super.setStatusCode(data.getStatusCode());
