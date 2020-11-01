@@ -51,7 +51,7 @@ public abstract class BaseIotData implements Serializable
 	
 	public String getName()
 	{
-		return null;
+		return this.name;
 	}
 	
 	public String getStateData()
@@ -61,12 +61,12 @@ public abstract class BaseIotData implements Serializable
 	
 	public int getStatusCode()
 	{
-		return 0;
+		return this.statusCode;
 	}
 	
 	public String getTimeStamp()
 	{
-		return null;
+		return this.timeStamp;
 	}
 	
 	public long getTimeStampMillis()
@@ -76,11 +76,12 @@ public abstract class BaseIotData implements Serializable
 	
 	public boolean hasError()
 	{
-		return false;
+		return this.hasError;
 	}
 	
 	public void setName(String name)
 	{
+		this.name = name;
 	}
 	
 	public void setStateData(String data)
@@ -89,15 +90,17 @@ public abstract class BaseIotData implements Serializable
 	
 	public void setStatusCode(int code)
 	{
+		this.statusCode = code;
 	}
 	
+	/**
+	 * Call handleUpdate method from respective derived class to update the latestData
+	 */
 	public void updateData(BaseIotData data)
 	{
-		// TODO: update local var's
 		
 		handleUpdateData(data);
 	}
-	
 	
 	// protected methods
 	

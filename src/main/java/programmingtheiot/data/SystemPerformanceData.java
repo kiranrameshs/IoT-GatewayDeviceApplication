@@ -20,13 +20,18 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 	
 	
 	// private var's
-	
+	private float cpuUtilization;
+	private float memoryUtilization;
+	private float diskUtilization;
     
 	// constructors
 	
 	public SystemPerformanceData()
 	{
 		super();
+		cpuUtilization = 0.0f;
+		memoryUtilization  = 0.0f;
+		diskUtilization  = 0.0f;
 	}
 	
 	
@@ -34,29 +39,46 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 	
 	public float getCpuUtilization()
 	{
-		return 0.0f;
+		return this.cpuUtilization;
 	}
 	
 	public float getDiskUtilization()
 	{
-		return 0.0f;
+		return this.diskUtilization;
 	}
 	
 	public float getMemoryUtilization()
 	{
-		return 0.0f;
+		return this.memoryUtilization;
 	}
 	
 	public void setCpuUtilization(float val)
 	{
+		this.cpuUtilization = val;
 	}
 	
 	public void setDiskUtilization(float val)
 	{
+		this.diskUtilization = val;
 	}
 	
 	public void setMemoryUtilization(float val)
 	{
+		this.memoryUtilization = val;
+	}
+	/**
+	 * Called by superClass handleUpdate
+	 * @param SystemPerformanceData
+	 */
+	public void updateData(SystemPerformanceData data)
+	{
+		
+		super.setName(data.getName());
+		super.setStateData(data.getStateData());
+		super.setStatusCode(data.getStatusCode());
+		this.setCpuUtilization(data.getCpuUtilization());
+		this.setDiskUtilization(data.getDiskUtilization());
+		this.setMemoryUtilization(data.getMemoryUtilization());
 	}
 	
 	

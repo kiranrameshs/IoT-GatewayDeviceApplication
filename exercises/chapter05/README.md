@@ -2,48 +2,46 @@
 
 ## Lab Module 05
 
-Be sure to implement all the PIOT-GDA-* issues (requirements) listed at [PIOT-INF-05-001 - Chapter 05](https://github.com/orgs/programming-the-iot/projects/1#column-10488421).
 
 ### Description
-
-NOTE: Include two full paragraphs describing your implementation approach by answering the questions listed below.
+  - Create/update data containers for sensor and actuator data
+  - Create/edit module - DataUtil
+  - Add functionality to BaseSystemUtilTask implementation
+  - Create/edit the module - DeviceDataManager
+  - Connect DeviceDataManager to GatewayDeviceApp
 
 What does your implementation do? 
+In this lab module, Data containers for actuator and sensor data are implemented (Getters and setters with updateData func()). DataUtil takes care of data conversions from actuator, sensor data types to JSON to send the data out and vice versa of converting JSON data to actuator/sensor data after receiving it from CDA. SystemStateData is a combination of sensor and System performance data. DeviceDataManager is implemented to take the trigger from the App and start all the Managers and connection clients. 
 
 How does your implementation work?
+ - GDA App is run, 
+ - DeviceDataManager is called to start and stop in the app's start/stop methods. 
+ - This handles SysPerfManager and all the connection client initialization
+ - This also handles the messages to be received and sent using the DataUtil module (Uses module Gson for conversions)
+ - Once the StopManager() is triggered, then the other managers are stopped and the connection clients are closed
 
 ### Code Repository and Branch
 
-NOTE: Be sure to include the branch (e.g. https://github.com/programming-the-iot/python-components/tree/alpha001).
-
-URL: 
+URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter05
 
 ### UML Design Diagram(s)
 
-NOTE: Include one or more UML designs representing your solution. It's expected each
-diagram you provide will look similar to, but not the same as, its counterpart in the
-book [Programming the IoT](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401/).
-
+![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter05/uml/lab5_GDA.png?raw=true)
 
 ### Unit Tests Executed
-
-NOTE: TA's will execute your unit tests. You only need to list each test case below
-(e.g. ConfigUtilTest, DataUtilTest, etc). Be sure to include all previous tests, too,
-since you need to ensure you haven't introduced regressions.
-
-- 
-- 
-- 
+ - ./data/ActuatorDataTest
+ - ./data/SensorDataTest
+ - ./data/SystemPerformanceDataTest
+ - ./data/SystemStateDataTest
+ - ./data/DataUtilTest
+ - All Unit tests under part01
 
 ### Integration Tests Executed
 
-NOTE: TA's will execute most of your integration tests using their own environment, with
-some exceptions (such as your cloud connectivity tests). In such cases, they'll review
-your code to ensure it's correct. As for the tests you execute, you only need to list each
-test case below (e.g. SensorSimAdapterManagerTest, DeviceDataManagerTest, etc.)
+ - ./data/DataIntegrationTest
+ - ./app/DeviceDataManagerNoCommsTest
+ - ./app/GatewayDeviceAppTest
 
-- 
-- 
-- 
+
 
 EOF.

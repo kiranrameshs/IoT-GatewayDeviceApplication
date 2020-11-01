@@ -24,7 +24,7 @@ public abstract class BaseSystemUtilTask
 	
 	
 	// private
-	
+	private SensorData latestSensorData = null;
 	
 	// constructors
 	
@@ -35,17 +35,28 @@ public abstract class BaseSystemUtilTask
 	
 	
 	// public methods
-	
+	/**
+	 * Use respective getSystemUtil methods from derived classes to generate telemetry value
+	 * @return
+	 */ 
 	public SensorData generateTelemetry()
 	{
-		return null;
+		SensorData sd = new SensorData();
+		this.latestSensorData = sd;
+		this.latestSensorData.setValue(this.getSystemUtil());
+		return this.latestSensorData;
 	}
 	
 	public float getTelemetryValue()
 	{
-		float val = getSystemUtil();
-		_Logger.info("System Util Value is "+val);
-		return val;
+		if(this.latestSensorData == null) {
+			SensorData sd = this.generateTelemetry();
+			return sd.getValue();
+		}
+		else {
+			return this.latestSensorData.getValue();
+		}
+		
 	}
 	
 	

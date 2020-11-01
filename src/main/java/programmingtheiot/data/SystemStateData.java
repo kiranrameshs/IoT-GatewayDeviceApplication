@@ -29,17 +29,15 @@ public class SystemStateData extends BaseIotData implements Serializable
 	public static final int NO_ACTION = 0;
 	public static final int REBOOT_SYSTEM_ACTION = 1;
 	public static final int GET_SYSTEM_STATE_ACTION = 2;
-	
 	public static final String DEFAULT_LOCATION = ConfigConst.NOT_SET;
 	
 	// private var's
 	
     private String location = DEFAULT_LOCATION;
-    
     private int actionCmd = NO_ACTION;
-    
     private List<SystemPerformanceData> sysPerfDataList = null;
     private List<SensorData> sensorDataList = null;
+    
     
     
 	// constructors
@@ -47,49 +45,72 @@ public class SystemStateData extends BaseIotData implements Serializable
 	public SystemStateData()
 	{
 		super();
+		sysPerfDataList = new ArrayList<>();
+		sensorDataList = new ArrayList<>();
 	}
-	
-	
+
 	// public methods
 	
 	public boolean addSensorData(SensorData data)
 	{
-		return false;
+		if(this.sensorDataList == null || data == null) {
+			return false;
+		}
+		sensorDataList.add(data);
+		return true;
+		
 	}
 	
 	public boolean addSystemPerformanceData(SystemPerformanceData data)
 	{
-		return false;
+		if(this.sysPerfDataList == null || data == null) {
+			return false;
+		}
+		sysPerfDataList.add(data);
+		return true;
 	}
 	
 	public int getActionCommand()
 	{
-		return 0;
+		return this.actionCmd;
 	}
 	
 	public String getLocation()
 	{
-		return null;
+		return this.location;
 	}
 	
 	public List<SensorData> getSensorDataList()
 	{
-		return null;
+		return this.sensorDataList;
 	}
 	
 	public List<SystemPerformanceData> getSystemPerformanceDataList()
 	{
-		return null;
+		return this.sysPerfDataList;
 	}
 	
 	public void setActionCommand(int actionCmd)
 	{
+		this.actionCmd = actionCmd;
 	}
 	
 	public void setLocation(String location)
 	{
+		this.location = location;
 	}
-	
+	/**
+	 * Called by superClass handleUpdate
+	 * @param SystemStateData
+	 */
+	public void updateData(SystemStateData data)
+	{
+		super.setName(data.getName());
+		super.setStateData(data.getStateData());
+		super.setStatusCode(data.getStatusCode());
+		this.setActionCommand(data.getActionCommand());
+		this.setLocation(data.getLocation());
+	}
 	
 	// protected methods
 	

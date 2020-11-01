@@ -52,7 +52,6 @@ public class SystemPerformanceManager
 	public SystemPerformanceManager()
 	{
 		this(ConfigConst.DEFAULT_POLL_CYCLES);
-		
 	}
 	
 	/**
@@ -68,7 +67,6 @@ public class SystemPerformanceManager
 		this.schedExecSvc = Executors.newScheduledThreadPool(1);
 		this.cpuUtilTask = new SystemCpuUtilTask();
 		this.memUtilTask = new SystemMemUtilTask();
-
 		this.taskRunner = () -> {
 		    this.handleTelemetry();
 		};
@@ -87,17 +85,20 @@ public class SystemPerformanceManager
 	public void setDataMessageListener(IDataMessageListener listener)
 	{
 	}
-	
+	/**
+	 * Start Manager triggered by device data manager 
+	 */
 	public void startManager()
 	{
 		_Logger.info("SytemPerformanceManager is starting...");
 		if (! this.isStarted) {
 		    ScheduledFuture<?> futureTask = this.schedExecSvc.scheduleAtFixedRate(this.taskRunner, 0L, this.pollSecs, TimeUnit.SECONDS);
-
 		    this.isStarted = true;
 		}
 	}
-	
+	/**
+	 * Stop Manager triggered by device data manager 
+	 */
 	public void stopManager()
 	{
 		this.schedExecSvc.shutdown();
