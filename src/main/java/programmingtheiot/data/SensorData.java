@@ -49,7 +49,10 @@ public class SensorData extends BaseIotData implements Serializable
 	{
 		this.val = val;
 	}
-	
+	/**
+	 * Called by superClass handleUpdate
+	 * @param SensorData
+	 */
 	public void updateData(SensorData data)
 	{
 		super.setName(data.getName());

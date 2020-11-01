@@ -35,7 +35,10 @@ public abstract class BaseSystemUtilTask
 	
 	
 	// public methods
-	
+	/**
+	 * Use respective getSystemUtil methods from derived classes to generate telemetry value
+	 * @return
+	 */ 
 	public SensorData generateTelemetry()
 	{
 		SensorData sd = new SensorData();

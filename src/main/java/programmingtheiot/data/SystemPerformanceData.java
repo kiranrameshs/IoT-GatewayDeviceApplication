@@ -66,7 +66,10 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 	{
 		this.memoryUtilization = val;
 	}
-	
+	/**
+	 * Called by superClass handleUpdate
+	 * @param SystemPerformanceData
+	 */
 	public void updateData(SystemPerformanceData data)
 	{
 		

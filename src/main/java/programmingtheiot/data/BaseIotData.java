@@ -93,13 +93,14 @@ public abstract class BaseIotData implements Serializable
 		this.statusCode = code;
 	}
 	
+	/**
+	 * Call handleUpdate method from respective derived class to update the latestData
+	 */
 	public void updateData(BaseIotData data)
 	{
-		// TODO: update local var's
 		
 		handleUpdateData(data);
 	}
-	
 	
 	// protected methods
 	

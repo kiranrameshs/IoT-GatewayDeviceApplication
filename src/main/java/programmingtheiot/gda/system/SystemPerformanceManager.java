@@ -85,7 +85,9 @@ public class SystemPerformanceManager
 	public void setDataMessageListener(IDataMessageListener listener)
 	{
 	}
-	
+	/**
+	 * Start Manager triggered by device data manager 
+	 */
 	public void startManager()
 	{
 		_Logger.info("SytemPerformanceManager is starting...");
@@ -94,7 +96,9 @@ public class SystemPerformanceManager
 		    this.isStarted = true;
 		}
 	}
-	
+	/**
+	 * Stop Manager triggered by device data manager 
+	 */
 	public void stopManager()
 	{
 		this.schedExecSvc.shutdown();

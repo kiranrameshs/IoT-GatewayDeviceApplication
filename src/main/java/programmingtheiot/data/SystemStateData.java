@@ -99,7 +99,10 @@ public class SystemStateData extends BaseIotData implements Serializable
 	{
 		this.location = location;
 	}
-	
+	/**
+	 * Called by superClass handleUpdate
+	 * @param SystemStateData
+	 */
 	public void updateData(SystemStateData data)
 	{
 		super.setName(data.getName());

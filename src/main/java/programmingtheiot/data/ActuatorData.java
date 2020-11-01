@@ -17,22 +17,18 @@ import java.io.Serializable;
 public class ActuatorData extends BaseIotData implements Serializable
 {
 	// static
-	
 	public static final int DEFAULT_COMMAND = 0;
 	public static final int COMMAND_OFF = DEFAULT_COMMAND;
 	public static final int COMMAND_ON = 1;
 	
 	
 	// private var's
-	
     private float val;
     private int command;
     
 	// constructors
-	
 	/**
 	 * Default.
-	 * 
 	 */
 	public ActuatorData()
 	{
@@ -43,27 +39,37 @@ public class ActuatorData extends BaseIotData implements Serializable
 	
 	
 	// public methods
-	
+	/**
+	 * Set command (ON/OFF) of Actuator Data.
+	 */
 	public int getCommand()
 	{
 		return this.command;
 	}
-	
+	/**
+	 * Get Value of Actuator Data..
+	 */
 	public float getValue()
 	{
 		return this.val;
 	}
-	
+	/**
+	 * Set command (ON/OFF) of Actuator Data..
+	 */
 	public void setCommand(int command)
 	{
 		this.command = command;
 	}
-	
+	/**
+	 * Set Value of Actuator Data.
+	 */
 	public void setValue(float val)
 	{
 		this.val = val;
 	}
-	
+	/**
+	 * Default.
+	 */
 	public void updateData(ActuatorData data)
 	{
 		super.setName(data.getName());

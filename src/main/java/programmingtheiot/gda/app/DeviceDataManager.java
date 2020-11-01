@@ -111,7 +111,7 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 	
 	/**
-	 * Handles incoming message by coverting message to Actuator ir System state data
+	 * Handles incoming message by converting message to Actuator ir System state data
 	**/
 	@Override
 	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
@@ -163,7 +163,6 @@ public class DeviceDataManager implements IDataMessageListener
 			if(isPersistentClientActive)
 			{
 				this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
-				//String jsonData = dataUtil.systemPerformanceDataToJson(data);
 				return true;
 			}
 		}

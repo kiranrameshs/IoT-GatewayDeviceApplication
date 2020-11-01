@@ -110,7 +110,6 @@ public class GatewayDeviceApp
 	/**
 	 * Load the config file.
 	 * 
-	 * NOTE: This will be added later.
 	 * 
 	 * @param configFile The name of the config file to load.
 	 */
