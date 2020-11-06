@@ -111,7 +111,7 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 	
 	/**
-	 * Handles incoming message by converting message to Actuator ir System state data
+	 * Handles incoming message by converting message to Actuator or System state data
 	**/
 	@Override
 	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
@@ -260,6 +260,7 @@ public class DeviceDataManager implements IDataMessageListener
 		this.coapServer = new CoapServerGateway();
 		this.smtpClient = new SmtpClientConnector();
 		this.mqttClient = new MqttClientConnector();
+		_Logger.info("Iitialized the MQTT client successfully");
 		this.persistenceClient = new RedisPersistenceAdapter();
 	}
 	
