@@ -94,7 +94,6 @@ public class DeviceDataManager implements IDataMessageListener
 	@Override
 	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data)
 	{
-		_Logger.info("handleActuatorCommandResponse has been called");
 		try {
 			if(isPersistentClientActive)
 			{
@@ -260,7 +259,6 @@ public class DeviceDataManager implements IDataMessageListener
 		this.coapServer = new CoapServerGateway();
 		this.smtpClient = new SmtpClientConnector();
 		this.mqttClient = new MqttClientConnector();
-		_Logger.info("Iitialized the MQTT client successfully");
 		this.persistenceClient = new RedisPersistenceAdapter();
 	}
 	

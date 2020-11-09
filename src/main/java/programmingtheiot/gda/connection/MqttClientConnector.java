@@ -35,7 +35,6 @@ import programmingtheiot.common.ResourceNameEnum;
 public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 {
 	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(MqttClientConnector.class.getName());
 	private static final  int DEFAULT_QOS = 1;
@@ -91,9 +90,11 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		    try {
 		    	_Logger.info("Connecting to MQTT broker");
 				this.mqttClient.connect(this.connOpts);
+				_Logger.info("Connected to MQTT broker");
 				return true;
 			}  catch (MqttException e) {
 				e.printStackTrace();
+				_Logger.info("Error connecting to MQTT broker");
 			}
 		}
 		else {
@@ -103,13 +104,17 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		return false;
 	}
 
+	/**
+	 * Disconnect from broker after unsubscribe
+	 * Return true if disconnection successful
+	 */
 	@Override
 	public boolean disconnectClient()
 	{
 		if (this.mqttClient.isConnected()) {
 		    try {
-		    	_Logger.info("Disconnecting from MQTT broker");
 				this.mqttClient.disconnect();
+				_Logger.info("Disconnected from MQTT broker");
 				return true;
 			} catch (MqttException e) {
 				e.printStackTrace();
@@ -121,7 +126,11 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Check if the client is connected to the Broker based on the conn state.
+	 * Return true if connected
+	 */
 	public boolean isConnected()
 	{
 		if(this.mqttClient.isConnected()) {
@@ -132,6 +141,11 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		}
 	}
 	
+	/**
+	 * Check if the topic name is valid else return false
+	 * Publish message
+	 * Return true if publish successful
+	 */
 	@Override
 	public boolean publishMessage(ResourceNameEnum topicName, String msg, int qos)
 	{
@@ -140,12 +154,13 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		}
 		_Logger.info("Publish Message");
 		String topic = topicName.toString();
-		_Logger.info("topic is "+topic);
-		MqttMessage message = new MqttMessage(msg.getBytes(StandardCharsets.UTF_8));
+		byte[] message = msg.getBytes(StandardCharsets.UTF_8);
 		try {
-			this.mqttClient.publish(topic, message);
+			this.mqttClient.publish(topic, message, qos, true );
+			_Logger.info("Publish successfull");
 			return true;
 		} catch (MqttPersistenceException e) {
+			_Logger.info("Publish failed");
 			e.printStackTrace();
 		} catch (MqttException e) {
 			e.printStackTrace();
@@ -153,34 +168,46 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		return false;
 	}
 
+	/**
+	 * Check if the topic name is valid else return false
+	 * Subscribe to a topic
+	 * Return true if subscription successful
+	 */
 	@Override
 	public boolean subscribeToTopic(ResourceNameEnum topicName, int qos) 
 	{
 		if(qos < 0 || qos > 2) {
 			qos = DEFAULT_QOS;
 		}
-		_Logger.info("Subscribe to topic");
+		_Logger.info("Subscribe topic");
 		String topic = topicName.toString();
-		_Logger.info("topic is "+topic);
 		try {
 			this.mqttClient.subscribe(topic, qos);
+			_Logger.info("Subscription to "+topic+" successfull");
 			return true;
 		} catch (MqttException e) {
+			_Logger.info("Subscription failed");
 			e.printStackTrace();
+			
 		}
 		return false;
 	}
 
+	/**
+	 * Unsubscribe to topic previously subscribed topic
+	 * Return true if unsubscribe successful
+	 */
 	@Override
 	public boolean unsubscribeFromTopic(ResourceNameEnum topicName)
 	{
-		_Logger.info("Unsubscribe from topic");
+		_Logger.info("Unsubscribe topic");
 		String topic = topicName.toString();
-		_Logger.info("topic is "+topic);
 		try {
 			this.mqttClient.unsubscribe(topic);
+			_Logger.info("Unsubscribe successfull");
 			return true;
 		} catch (MqttException e) {
+			_Logger.info("Unsubscribe failed");
 			e.printStackTrace();
 		}
 		return false;
@@ -198,7 +225,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	@Override
 	public void connectComplete(boolean reconnect, String serverURI)
 	{
-		_Logger.info("Connect Complete");
+		_Logger.info("Connection Complete");
 	}
 
 	@Override
