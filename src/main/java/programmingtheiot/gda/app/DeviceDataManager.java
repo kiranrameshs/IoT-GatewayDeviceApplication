@@ -94,7 +94,6 @@ public class DeviceDataManager implements IDataMessageListener
 	@Override
 	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data)
 	{
-		_Logger.info("handleActuatorCommandResponse has been called");
 		try {
 			if(isPersistentClientActive)
 			{
@@ -111,7 +110,7 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 	
 	/**
-	 * Handles incoming message by converting message to Actuator ir System state data
+	 * Handles incoming message by converting message to Actuator or System state data
 	**/
 	@Override
 	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)

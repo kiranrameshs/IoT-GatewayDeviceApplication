@@ -2,48 +2,73 @@
 
 ## Lab Module 07
 
-Be sure to implement all the PIOT-GDA-* issues (requirements) listed at [PIOT-INF-07-001 - Chapter 07](https://github.com/orgs/programming-the-iot/projects/1#column-10488499).
 
 ### Description
-
-NOTE: Include two full paragraphs describing your implementation approach by answering the questions listed below.
+  - Install and configure Mosquitto MQTT Broker for your platform	
+  - Create / edit module MqttClientConnector
+  - Create the callback infrastructure for MqttClientConnector
+  - Create the publish and subscribe methods for MqttClientConnector
+  - Connect MqttClientConnector to DeviceDataManager
 
 What does your implementation do? 
+In this lab module, the goal is to integrate the MQTT connection/ connector on GDA so that the messages are communicated between the CDA and GDA using MQTT broker. The module MqttClientConnector uses the APIs connect, subscribe, publish, unsubscribe, disconnect from the message broker. For GDA, the incoming messages are Sensor data from the CDA and the outgoing messages are Actuator commands. Once the Sensor data is received, if threshold value is crossed, then the respective Actuator Data command to be published to the MQTT Broker is triggered 
+
+
 
 How does your implementation work?
+ - GDA App is run, 
+ - DeviceDataManager initializes the MQTT client connection to the broker depending on the configurations 
+ - First, the MQTT broker (installed in Windows using a exe and run in the background)
+ - Once the message is received by the Device Data manager from the broker to the subscribed topic, the actuator command is published to the same subscribed topic 
+ - Once the StopManager() is triggered, then the client connection to the MQTT broker is disconnected and closed
 
 ### Code Repository and Branch
 
-NOTE: Be sure to include the branch (e.g. https://github.com/programming-the-iot/python-components/tree/alpha001).
-
-URL: 
+URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter07
 
 ### UML Design Diagram(s)
 
-NOTE: Include one or more UML designs representing your solution. It's expected each
-diagram you provide will look similar to, but not the same as, its counterpart in the
-book [Programming the IoT](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401/).
+![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/uml/lab7_GDA.png?raw=true)
 
+### Wireshark PCAP capture Snap(s)
+
+ #### - CONNECT
+ ![CONNECT](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/CONNECT.PNG?raw=true) 
+ #### - CONNACK
+ ![CONNACK](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/CONNACK.PNG?raw=true) 
+ #### - PUBLISH
+ ![PUBLISH](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PUBLISH.PNG?raw=true) 
+ #### - PUBACK
+ ![PUBACK](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PUBACK.PNG?raw=true)  
+ #### - PUBREC
+ ![PUBREC](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PUBREC.PNG?raw=true)  
+ #### - PUBREL
+ ![PUBREL](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PUBREL.PNG?raw=true)  
+ #### - PUBCOMP
+ ![PUBCOMP](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PUBCOMP.PNG?raw=true)  
+ #### - SUBSCRIBE
+ ![SUBSCRIBE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/SUBSCRIBE.PNG?raw=true)  
+ #### - SUBACK
+ ![SUBACK](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/SUBACK.PNG?raw=true)  
+ #### - UNSUBSCRIBE
+ ![UNSUBSCRIBE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/UNSUBSCRIBE.PNG?raw=true)  
+ #### - UNSUBACK
+ ![UNSUBACK](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/UNSUBACK.PNG?raw=true)  
+ #### - PINGREQ
+ ![PINGREQ](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PINGREQ.PNG?raw=true)  
+ #### - PINGRESP
+ ![PINGRESP](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/PINGRESP.PNG?raw=true)  
+ #### - DISCONNECT
+ ![DISCONNECT](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter07/pcap/DISCONNECT.PNG?raw=true) 
 
 ### Unit Tests Executed
-
-NOTE: TA's will execute your unit tests. You only need to list each test case below
-(e.g. ConfigUtilTest, DataUtilTest, etc). Be sure to include all previous tests, too,
-since you need to ensure you haven't introduced regressions.
-
-- 
-- 
-- 
+ - All Unit tests under part01
+ - All Unit tests under part02
 
 ### Integration Tests Executed
 
-NOTE: TA's will execute most of your integration tests using their own environment, with
-some exceptions (such as your cloud connectivity tests). In such cases, they'll review
-your code to ensure it's correct. As for the tests you execute, you only need to list each
-test case below (e.g. SensorSimAdapterManagerTest, DeviceDataManagerTest, etc.)
+ -  ./src/test/java/programmingtheiot/part03/integration/MqttClientConnectorTest
 
-- 
-- 
-- 
+
 
 EOF.
