@@ -235,4 +235,6 @@ public class CoapClientConnector implements IRequestResponseClient
 			_Logger.log(Level.SEVERE, "Failed to connect to broker: " + (this.clientConn != null ? this.clientConn.getURI() : this.serverAddr), e);
 		}
 	}
+
+	
 }
