@@ -117,30 +117,22 @@ public class CoapServerGateway
 	{
 		List<String> resourceNames = resource.getResourceNameChain();
 		Queue<String> queue = new ArrayBlockingQueue<>(resourceNames.size());
-		
 		queue.addAll(resourceNames);
-		
 		// check if we have a parent resource
 		Resource parentResource = this.coapServer.getRoot();
-		
 		// if no parent resource, add it in now (should be named "PIOT")
 		if (parentResource == null) {
 			parentResource = new GenericCoapResourceHandler(queue.poll());
 			this.coapServer.add(parentResource);
 		}
-		
 		while (! queue.isEmpty()) {
 			// get the next resource name
 			String   resourceName = queue.poll();
 			Resource nextResource = parentResource.getChild(resourceName);
-			
 			if (nextResource == null) {
-				// TODO: if this is the last entry, use a custom resource handler implementation that
-				// is specific to the resource's implementation needs (e.g. SensorData, ActuatorData, etc.)
 				nextResource = new GenericCoapResourceHandler(resourceName);
 				parentResource.add(nextResource);
 			}
-			
 			parentResource = nextResource;
 		}
 	}
@@ -148,9 +140,6 @@ public class CoapServerGateway
 	private void initServer(ResourceNameEnum ...resources)
 	{
 		coapServer = new CoapServer();
-		
-		// TODO: Get the List of Strings representing all ResourceNameEnum names (assuming it's named 'resources')
-
 		for (ResourceNameEnum rn : resources) {
 			addResource(rn);
 		}
