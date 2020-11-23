@@ -30,7 +30,7 @@ URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/t
 
 ### Integration Tests Executed
 
- -  NA
+ -  programmingtheiot/part03/integration/connection/CoapServerGatewayTest
 
 
 
