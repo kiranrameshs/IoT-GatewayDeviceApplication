@@ -38,7 +38,7 @@ public interface IRequestResponseClient
 	 * @param timeout The number of seconds to wait for a response before returning (default is 5).
 	 * @return boolean True on success; False otherwise.
 	 */
-	public boolean sendDeleteRequest(ResourceNameEnum resource,boolean enableCON, int timeout);
+	public boolean sendDeleteRequest(ResourceNameEnum resource, int timeout);
 
 	/**
 	 * Connects to the server and sends GET request for resource at path.
@@ -48,7 +48,7 @@ public interface IRequestResponseClient
 	 * @param timeout The number of seconds to wait for a response before returning (default is 5).
 	 * @return boolean True on success; False otherwise.
 	 */
-	public boolean sendGetRequest(ResourceNameEnum resource,boolean enableCON, int timeout);
+	public boolean sendGetRequest(ResourceNameEnum resource, int timeout);
 
 	/**
 	 * Connects to the server and sends POST request of payload to resource at path.
@@ -59,7 +59,7 @@ public interface IRequestResponseClient
 	 * @param timeout The number of seconds to wait for a response before returning (default is 5).
 	 * @return boolean True on success; False otherwise.
 	 */
-	public boolean sendPostRequest(ResourceNameEnum resource,boolean enableCON, String payload, int timeout);
+	public boolean sendPostRequest(ResourceNameEnum resource, String payload, int timeout);
 
 	/**
 	 * Connects to the server and sends GET request for resource at path.
@@ -70,7 +70,7 @@ public interface IRequestResponseClient
 	 * @param timeout The number of seconds to wait for a response before returning (default is 5).
 	 * @return boolean True on success; False otherwise.
 	 */
-	public boolean sendPutRequest(ResourceNameEnum resource,boolean enableCON, String payload, int timeout);
+	public boolean sendPutRequest(ResourceNameEnum resource, String payload, int timeout);
 
 	/**
 	 * Sets the data message listener reference, assuming listener is non-null.

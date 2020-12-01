@@ -89,7 +89,6 @@ public class CoapClientConnector implements IRequestResponseClient
 	
 	// public methods
 	
-	@Override
 	public boolean sendDiscoveryRequest(int timeout)
 	{
 		this.clientConn.setURI("/.well-known/core");
@@ -100,7 +99,6 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
-	@Override
 	public boolean sendDeleteRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
 		CoapResponse response = null;
@@ -126,7 +124,6 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
-	@Override
 	public boolean sendGetRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
 		
@@ -153,7 +150,6 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
-	@Override
 	public boolean sendPostRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
@@ -179,7 +175,6 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
-	@Override
 	public boolean sendPutRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
@@ -234,6 +229,30 @@ public class CoapClientConnector implements IRequestResponseClient
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to connect to broker: " + (this.clientConn != null ? this.clientConn.getURI() : this.serverAddr), e);
 		}
+	}
+
+	@Override
+	public boolean sendDeleteRequest(ResourceNameEnum resource, int timeout) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean sendGetRequest(ResourceNameEnum resource, int timeout) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean sendPostRequest(ResourceNameEnum resource, String payload, int timeout) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean sendPutRequest(ResourceNameEnum resource, String payload, int timeout) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	
