@@ -10,6 +10,12 @@ package programmingtheiot.data;
 
 import java.io.Serializable;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import programmingtheiot.common.IDataMessageListener;
+import programmingtheiot.common.ResourceNameEnum;
+
 /**
  * Shell representation of class for student implementation.
  *
@@ -89,5 +95,7 @@ public class ActuatorData extends BaseIotData implements Serializable
 	{
 		
 	}
+	
+	
 	
 }

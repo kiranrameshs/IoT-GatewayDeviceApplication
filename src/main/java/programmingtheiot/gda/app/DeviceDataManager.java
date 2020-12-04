@@ -30,6 +30,7 @@ import programmingtheiot.gda.connection.MqttClientConnector;
 import programmingtheiot.gda.connection.RedisPersistenceAdapter;
 import programmingtheiot.gda.connection.SmtpClientConnector;
 import programmingtheiot.gda.system.SystemPerformanceManager;
+import programmingtheiot.common.ResourceNameEnum;
 
 /**
  * Shell representation of class for student implementation.
@@ -54,6 +55,8 @@ public class DeviceDataManager implements IDataMessageListener
 	private IPersistenceClient persistenceClient = null;
 	private IRequestResponseClient smtpClient = null;
 	private CoapServerGateway coapServer = null;
+	private int humiditySensorFloor = 0;
+	private int humiditySensorCeiling = 0;
 	
 	// constructors
 	public DeviceDataManager()
@@ -65,6 +68,8 @@ public class DeviceDataManager implements IDataMessageListener
 		this.enableCloudClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_CLOUD_CLIENT_KEY);
 		this.enableSmtpClient  = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_SMTP_CLIENT_KEY);
 		this.enablePersistenceClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_PERSISTENCE_CLIENT_KEY);
+		this.humiditySensorFloor = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_FLOOR);
+		this.humiditySensorCeiling = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_CEILING);
 		initConnections();
 		this.sysPerfManager = new SystemPerformanceManager(10);
 	}
@@ -136,13 +141,25 @@ public class DeviceDataManager implements IDataMessageListener
 	{
 		_Logger.info("handleSensorMessage has been called");
 		DataUtil dataUtil = DataUtil.getInstance();
+	
+		
 		try {
-			if(isPersistentClientActive)
-			{
-				this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
+			if(data.getValue() <this.humiditySensorFloor || data.getValue() > this.humiditySensorCeiling ) {
+				
+				ActuatorData ad = new ActuatorData();
+				ad.setCommand(1);
+				ad.setStateData(data.getStateData());
+				this.mqttClient.publishMessage(ResourceNameEnum.CDA_ACTUATOR_CMD_RESOURCE, ad.toString(), 0);
+				String jsonData = dataUtil.actuatorDataToJson(ad);
+				handleUpstreamTransmission(ResourceNameEnum.CDA_ACTUATOR_CMD_RESOURCE, jsonData);
+				if(isPersistentClientActive)
+				{
+					
+					this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
+					
+				}
 				return true;
 			}
-				
 		}
 		catch(Exception ex) {
 			_Logger.info("Exception occured: " + ex.getMessage());

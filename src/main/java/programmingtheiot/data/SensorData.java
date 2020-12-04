@@ -22,14 +22,14 @@ public class SensorData extends BaseIotData implements Serializable
 	
 
 	// private var's
-	private float val;
+	private float value;
     
 	// constructors
 	
 	public SensorData()
 	{
 		super();
-		val = 0.0f;
+		value = 0.0f;
 	}
 	
 	public SensorData(int sensorType)
@@ -42,12 +42,12 @@ public class SensorData extends BaseIotData implements Serializable
 	
 	public float getValue()
 	{
-		return this.val;
+		return this.value;
 	}
 	
 	public void setValue(float val)
 	{
-		this.val = val;
+		this.value = val;
 	}
 	/**
 	 * Called by superClass handleUpdate
