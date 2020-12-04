@@ -1,49 +1,51 @@
-# Constrained Device Application (Connected Devices)
+# Gateway Device Application (Connected Devices)
 
 ## Lab Module 09
 
-Be sure to implement all the PIOT-CDA-* issues (requirements) listed at [PIOT-INF-09-001 - Chapter 09](https://github.com/orgs/programming-the-iot/projects/1#column-10488503).
 
 ### Description
-
-NOTE: Include two full paragraphs describing your implementation approach by answering the questions listed below.
+  - Create module CoapClientConnector
+  - Add a custom response handler
+  - Add Discovery functionality to CoapClientConnector
+  - Add GET, PUT, POST, DELETE functionality to CoapClientConnector
 
 What does your implementation do? 
+This implementation is for creating a coApClient on the GDA. The connector creates the URL to the coAp server and has methods to generate get,put,post and delete methods
+
 
 How does your implementation work?
+The client connector, when initialized creates the coAP server address and calls the intiConnections method which will create the coApClient object using the CoapClient class of californium. Then methods are provided to generate get,put,post and delete methods. In these methods, we set the URI, call the coApHandler with the help of GenericCoapResponseHandler and call the respective methods. To run the connector, we must first run the coApServer on the GDA and then run the client connector.
 
 ### Code Repository and Branch
 
-NOTE: Be sure to include the branch (e.g. https://github.com/programming-the-iot/python-components/tree/alpha001).
-
-URL: 
+URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter09
 
 ### UML Design Diagram(s)
 
-NOTE: Include one or more UML designs representing your solution. It's expected each
-diagram you provide will look similar to, but not the same as, its counterpart in the
-book [Programming the IoT](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401/).
+![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/uml/lab9_GDA.png?raw=true)
 
+### Wireshark PCAP capture Snap(s)
 
+ #### - GET
+ ![GET](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_Get.PNG?raw=true) 
+ #### - GETRESPONSE
+ ![GETRESPONSE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_Get_Response.PNG?raw=true) 
+ #### - POST
+ ![POST](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_Post.PNG?raw=true) 
+ #### - POSTRESPONSE
+ ![POSTRESPONSE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_Post_Response.PNG?raw=true)  
+ #### - PUT
+ ![PUT](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_Put.PNG?raw=true)  
+ #### - FULLCAPTURE
+ ![FULLCAPTURE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter09/pcap/coAP/GDA_FullCapture.PNG?raw=true) 
+ 
 ### Unit Tests Executed
-
-NOTE: TA's will execute your unit tests. You only need to list each test case below
-(e.g. ConfigUtilTest, DataUtilTest, etc). Be sure to include all previous tests, too,
-since you need to ensure you haven't introduced regressions.
-
-- 
-- 
-- 
+ - NA
 
 ### Integration Tests Executed
 
-NOTE: TA's will execute most of your integration tests using their own environment, with
-some exceptions (such as your cloud connectivity tests). In such cases, they'll review
-your code to ensure it's correct. As for the tests you execute, you only need to list each
-test case below (e.g. SensorSimAdapterManagerTest, DeviceDataManagerTest, etc.)
+ -  ./src/test/java/programmingtheiot/part03/integration/connection/CoapClientConnectorTest
 
-- 
-- 
-- 
+
 
 EOF.

@@ -2,48 +2,36 @@
 
 ## Lab Module 08
 
-Be sure to implement all the PIOT-GDA-* issues (requirements) listed at [PIOT-INF-08-001 - Chapter 08](https://github.com/orgs/programming-the-iot/projects/1#column-10488501).
 
 ### Description
-
-NOTE: Include two full paragraphs describing your implementation approach by answering the questions listed below.
+  - Install and configure Californium Tools for your platform
+  - Create / edit module CoapServerGateway
+  - Create a generic resource handler
+  - Update CoapServerGateway to register all required resource handlers
 
 What does your implementation do? 
+In this lab module, the goal is to implement the CoAP server. coAp servers need resource handlers to function such as GET, PUT, POST and DELETE request methods for a given resource name. So these instances are created and registered.
+
 
 How does your implementation work?
+The Device Data Manager can control the coAP server through start and stop methods. Once the coAp server is started, an instance of the server is created and used from the server class. The resources for the server is based on the constructor called, for example it can either be default resources or custom resources. GenericCoapResourceHandler is used for local resource implementations
 
 ### Code Repository and Branch
 
-NOTE: Be sure to include the branch (e.g. https://github.com/programming-the-iot/python-components/tree/alpha001).
-
-URL: 
+URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter08
 
 ### UML Design Diagram(s)
 
-NOTE: Include one or more UML designs representing your solution. It's expected each
-diagram you provide will look similar to, but not the same as, its counterpart in the
-book [Programming the IoT](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401/).
+![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter08/uml/lab8_GDA.png?raw=true)
 
 
 ### Unit Tests Executed
-
-NOTE: TA's will execute your unit tests. You only need to list each test case below
-(e.g. ConfigUtilTest, DataUtilTest, etc). Be sure to include all previous tests, too,
-since you need to ensure you haven't introduced regressions.
-
-- 
-- 
-- 
+ - NA
 
 ### Integration Tests Executed
 
-NOTE: TA's will execute most of your integration tests using their own environment, with
-some exceptions (such as your cloud connectivity tests). In such cases, they'll review
-your code to ensure it's correct. As for the tests you execute, you only need to list each
-test case below (e.g. SensorSimAdapterManagerTest, DeviceDataManagerTest, etc.)
+ -  ./src/test/java/programmingtheiot/part03/integration/connection/CoapServerGatewayTest
 
-- 
-- 
-- 
+
 
 EOF.
