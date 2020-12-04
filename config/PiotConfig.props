@@ -72,3 +72,15 @@ pressureSimFloor   = 990
 pressureSimCeiling = 1010
 tempSimFloor       = 18
 tempSimCeiling     = 22
+
+[Cloud.GatewayService]
+credFile       = /cred/UbidotsCloudCred.props
+certFile       = /cert/UbidotsCloudCert.pem
+host           = industrial.api.ubidots.com
+port           = 1883
+securePort     = 8883
+defaultQoS     = 0
+keepAlive      = 30
+enableCrypt    = True
+baseUrl        = https://things.ubidots.com/api/v1.6/
+baseTopic      = /v1.6/devices/

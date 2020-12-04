@@ -100,7 +100,7 @@ public class CloudClientConnectorTest
 		IDataMessageListener listener = new DefaultDataMessageListener();
 		
 		assertTrue(this.cloudClient.connectClient());
-		assertTrue(this.cloudClient.subscribeToTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, qos));
+		//assertTrue(this.cloudClient.subscribeToTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, qos));
 		
 		try {
 			Thread.sleep(5000);
@@ -108,7 +108,7 @@ public class CloudClientConnectorTest
 			// ignore
 		}
 		
-		assertTrue(this.cloudClient.publishMessage(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, "TEST: This is the GDA message payload.", qos));
+		//assertTrue(this.cloudClient.publishMessage(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, "TEST: This is the GDA message payload.", qos));
 		
 		try {
 			Thread.sleep(5000);
@@ -116,7 +116,7 @@ public class CloudClientConnectorTest
 			// ignore
 		}
 		
-		assertTrue(this.cloudClient.unsubscribeFromTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE));
+		//assertTrue(this.cloudClient.unsubscribeFromTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE));
 
 		try {
 			Thread.sleep(5000);

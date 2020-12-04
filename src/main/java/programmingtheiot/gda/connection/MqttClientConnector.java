@@ -46,6 +46,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	private static final Logger _Logger =
 		Logger.getLogger(MqttClientConnector.class.getName());
 	private static final  int DEFAULT_QOS = 1;
+	private boolean useCloudGatewayConfig = false;
 	
 	// params
 	private int port;
@@ -86,10 +87,20 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	
 	public MqttClientConnector()
 	{
+		this(false);
+	}
+	
+	public MqttClientConnector(boolean useCloudGatewayConfig)
+	{
 		super();
 		
-		initClientParameters(ConfigConst.MQTT_GATEWAY_SERVICE);
+		this.useCloudGatewayConfig = useCloudGatewayConfig;
 		
+		if (useCloudGatewayConfig) {
+			initClientParameters(ConfigConst.CLOUD_GATEWAY_SERVICE);
+		} else {
+			initClientParameters(ConfigConst.MQTT_GATEWAY_SERVICE);
+		}
 	}
 	
 	
@@ -169,23 +180,25 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	@Override
 	public boolean publishMessage(ResourceNameEnum topicName, String msg, int qos)
 	{
-		if(qos < 0 || qos > 2) {
-			qos = DEFAULT_QOS;
-		}
-//		_Logger.info("Publish Message");
-		String topic = topicName.toString();
+//		if(qos < 0 || qos > 2) {
+//			qos = DEFAULT_QOS;
+//		}
+////		_Logger.info("Publish Message");
+//		String topic = topicName.toString();
+//		byte[] message = msg.getBytes(StandardCharsets.UTF_8);
+//		try {
+//			this.mqttClient.publish(topic, message, qos, true );
+////			_Logger.info("Publish successfull");
+//			return true;
+//		} catch (MqttPersistenceException e) {
+////			_Logger.info("Publish failed");
+//			e.printStackTrace();
+//		} catch (MqttException e) {
+//			e.printStackTrace();
+//		}     
+//		return false;
 		byte[] message = msg.getBytes(StandardCharsets.UTF_8);
-		try {
-			this.mqttClient.publish(topic, message, qos, true );
-//			_Logger.info("Publish successfull");
-			return true;
-		} catch (MqttPersistenceException e) {
-//			_Logger.info("Publish failed");
-			e.printStackTrace();
-		} catch (MqttException e) {
-			e.printStackTrace();
-		}     
-		return false;
+		return publishMessage(topicName.getResourceName(), message, qos);
 	}
 
 	/**
@@ -196,21 +209,23 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	@Override
 	public boolean subscribeToTopic(ResourceNameEnum topicName, int qos) 
 	{
-		if(qos < 0 || qos > 2) {
-			qos = DEFAULT_QOS;
-		}
-		_Logger.info("Subscribe topic");
-		String topic = topicName.toString();
-		try {
-			this.mqttClient.subscribe(topic, qos);
-			_Logger.info("Subscription to "+topic+" successfull");
-			return true;
-		} catch (MqttException e) {
-			_Logger.info("Subscription failed");
-			e.printStackTrace();
-			
-		}
-		return false;
+//		if(qos < 0 || qos > 2) {
+//			qos = DEFAULT_QOS;
+//		}
+//		_Logger.info("Subscribe topic");
+//		String topic = topicName.toString();
+//		try {
+//			this.mqttClient.subscribe(topic, qos);
+//			_Logger.info("Subscription to "+topic+" successfull");
+//			return true;
+//		} catch (MqttException e) {
+//			_Logger.info("Subscription failed");
+//			e.printStackTrace();
+//			
+//		}
+//		return false;
+		
+		return subscribeToTopic(topicName.getResourceName(), qos);
 	}
 
 	/**
@@ -220,17 +235,19 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	@Override
 	public boolean unsubscribeFromTopic(ResourceNameEnum topicName)
 	{
-		_Logger.info("Unsubscribe topic");
-		String topic = topicName.toString();
-		try {
-			this.mqttClient.unsubscribe(topic);
-			_Logger.info("Unsubscribe successfull");
-			return true;
-		} catch (MqttException e) {
-			_Logger.info("Unsubscribe failed");
-			e.printStackTrace();
-		}
-		return false;
+//		_Logger.info("Unsubscribe topic");
+//		String topic = topicName.toString();
+//		try {
+//			this.mqttClient.unsubscribe(topic);
+//			_Logger.info("Unsubscribe successfull");
+//			return true;
+//		} catch (MqttException e) {
+//			_Logger.info("Unsubscribe failed");
+//			e.printStackTrace();
+//		}
+//		return false;
+		
+		return unsubscribeFromTopic(topicName.getResourceName());
 	}
 
 	@Override
@@ -249,6 +266,8 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	@Override
 	public void connectComplete(boolean reconnect, String serverURI)
 	{
+		
+		
 		_Logger.info("MQTT connection successful (is reconnect = " + reconnect + "). Broker: " + serverURI);
 		
 		int qos = 1;
@@ -267,6 +286,13 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 					ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE.getResourceName(),
 					qos,
 					new SysPerfResponseMessageListener(ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE, this.dataMsgListener));
+			
+			if(useCloudGatewayConfig) {
+				this.mqttClient.subscribe(
+						ResourceNameEnum.GDA_CLOUD_GATEWAY_MSG_RESOURCE.getResourceName(),
+						qos,
+						new SysPerfResponseMessageListener(ResourceNameEnum.GDA_CLOUD_GATEWAY_MSG_RESOURCE, this.dataMsgListener));
+			}
 		} catch (MqttException e) {
 			_Logger.warning("Failed to subscribe to CDA actuator response topic.");
 		}
@@ -485,6 +511,60 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 				_Logger.warning("Failed to convert message payload to ActuatorData.");
 			}
 		}
+	}
+	
+	protected boolean publishMessage(String topic, byte[] payload, int qos)
+	{
+		MqttMessage message = new MqttMessage(payload);
+		
+		if (qos < 0 || qos > 2) {
+			qos = 0;
+		}
+		
+		message.setQos(qos);
+		
+		// NOTE: you may want to log the exception stack trace if the call fails
+		try {
+			_Logger.info("Publishing message to topic: " + topic);
+			
+			this.mqttClient.publish(topic, message);
+			
+			return true;
+		} catch (MqttPersistenceException e) {
+			_Logger.warning("Persistence exception thrown when publishing to topic: " + topic);
+		} catch (MqttException e) {
+			_Logger.warning("MQTT exception thrown when publishing to topic: " + topic);
+		}
+		
+		return false;
+	}
+	
+	protected boolean subscribeToTopic(String topic, int qos)
+	{
+		// NOTE: you may want to log the exception stack trace if the call fails
+		try {
+			this.mqttClient.subscribe(topic, qos);
+			
+			return true;
+		} catch (MqttException e) {
+			_Logger.warning("Failed to subscribe to topic: " + topic);
+		}
+		
+		return false;
+	}
+	
+	protected boolean unsubscribeFromTopic(String topic)
+	{
+		// NOTE: you may want to log the exception stack trace if the call fails
+		try {
+			this.mqttClient.unsubscribe(topic);
+			
+			return true;
+		} catch (MqttException e) {
+			_Logger.warning("Failed to unsubscribe from topic: " + topic);
+		}
+		
+		return false;
 	}
 	
 	
