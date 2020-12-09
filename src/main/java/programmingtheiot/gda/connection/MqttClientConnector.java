@@ -525,7 +525,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		
 		// NOTE: you may want to log the exception stack trace if the call fails
 		try {
-			_Logger.info("Publishing message to topic: " + topic);
+//			_Logger.info("Publishing message to topic: " + topic);
 			
 			this.mqttClient.publish(topic, message);
 			
