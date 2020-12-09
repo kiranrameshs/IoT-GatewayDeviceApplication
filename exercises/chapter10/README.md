@@ -2,48 +2,58 @@
 
 ## Lab Module 10
 
-Be sure to implement all the PIOT-GDA-* issues (requirements) listed at [PIOT-INF-10-001 - Chapter 10](https://github.com/orgs/programming-the-iot/projects/1#column-10488510).
 
 ### Description
-
-NOTE: Include two full paragraphs describing your implementation approach by answering the questions listed below.
+  - Update MqttClientConnector to support encrypted connections to the broker
+  - Update MqttClientConnector to send received messages to an IDataMessageListener instance 
+  - Update DeviceDataManager to handle analyze messages from the CDA and take an appropriate action
+  - Update sensor and actuator data containers to set the appropriate device name
+  - Test the integration between the CDA and GDA using MQTT
 
 What does your implementation do? 
+First, we test the performance for each of the QoS levels: QoS 0, QoS 1, and QoS 2 with MAX_TEST_RUNS = 10000 by disabling unnecessary logging
+ - How long was the connect / disconnect? -> 11.9 ms
+ - For the QoS tests, include the percentage difference between each QoS level, with QoS 0 tests as the baseline -> QOS1 -25& and QOS2 +57% 
+ - Which ran fastest? -> QOS0
+ - Which ran slowest? -> QOS2
+
+This implementation is mainly about handling both upstream and downstream messages on GDA such as sensor, sysperf from downstream and actuatorData as upstream. 
+MqttClientConnector supports TLS encrypted connections with the broker. GDA subscribes to CDA's topic and handles SensorData, ActuatorData and SystemPerfData. 
+Implementation also includes analysis of all 3 types of messages.
 
 How does your implementation work?
+MqttClientConnector uses SSLSocketFactory to initilaize the connection with TLS encryption. Then the subscribe functionality handles the received messages and converts to respective data types.
+GDA checks if incoming SensorData (Humidity) crosses these threshold values. Once the threshold is crossed, create an ActuatorData message with the command set to turn on/off the humidifier with right actuator type and the command. 
+Once the ActuatorData message is created, we publish it to the CDA's ResourceNameEnum.CDA_ACTUATOR_CMD_RESOURCE topic along with ActuatorData (state data).
+For systemperf and systemstatedata containers to get appropriate device names, they are added as configuration in ConfigConst, SystemStateData and SystemPerformanceData recieve this as an argument in the constructor of their respective classes and is used in generateTelemetry()
+
 
 ### Code Repository and Branch
 
-NOTE: Be sure to include the branch (e.g. https://github.com/programming-the-iot/python-components/tree/alpha001).
-
-URL: 
+URL: https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/tree/chapter10
 
 ### UML Design Diagram(s)
 
-NOTE: Include one or more UML designs representing your solution. It's expected each
-diagram you provide will look similar to, but not the same as, its counterpart in the
-book [Programming the IoT](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401/).
+![GDA](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter10/uml/lab10_GDA.png?raw=true)
 
+ ### Performance test Snap(s)
+
+ #### - CoAP
+ ![CoAP](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter10/pcap/CoAPTest.PNG?raw=true) 
+ #### - MQTT
+ ![GETRESPONSE](https://github.com/NU-CSYE6530-Fall2020/gateway-device-app-kiran-ramesh-s/blob/chapter10/pcap/MQTTTest.PNG?raw=true) 
 
 ### Unit Tests Executed
-
-NOTE: TA's will execute your unit tests. You only need to list each test case below
-(e.g. ConfigUtilTest, DataUtilTest, etc). Be sure to include all previous tests, too,
-since you need to ensure you haven't introduced regressions.
-
-- 
-- 
-- 
+ - NA
 
 ### Integration Tests Executed
 
-NOTE: TA's will execute most of your integration tests using their own environment, with
-some exceptions (such as your cloud connectivity tests). In such cases, they'll review
-your code to ensure it's correct. As for the tests you execute, you only need to list each
-test case below (e.g. SensorSimAdapterManagerTest, DeviceDataManagerTest, etc.)
+ -  ./src/test/java/programmingtheiot/part03/integration/connection/CoapClientConnectorTest
+ 
+### Performance test
 
-- 
-- 
-- 
+ - src/test/java/programmingtheiot/part03/integration/connection MqttClientPerformanceTest.java
+
+
 
 EOF.
