@@ -101,8 +101,13 @@ public class SystemPerformanceManager
 	 */
 	public void stopManager()
 	{
-		this.schedExecSvc.shutdown();
-		_Logger.info("SytemPerformanceManager is stopped...");
+		_Logger.info("SytemPerformanceManager is stopped.");
+		try {
+			this.schedExecSvc.shutdown();
+		}
+		catch(Exception e) {
+			_Logger.info("SytemPerformanceManager failed to stop");
+		}
 	}
 	
 }

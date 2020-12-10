@@ -39,8 +39,8 @@ public class ActuatorData extends BaseIotData implements Serializable
 	public ActuatorData()
 	{
 		super();
-		val = 0.0f;
-		command = 0;
+		this.val = 0.0f;
+		this.command=DEFAULT_COMMAND;
 	}
 	
 	

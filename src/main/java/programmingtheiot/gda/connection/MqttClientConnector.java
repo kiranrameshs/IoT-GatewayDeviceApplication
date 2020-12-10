@@ -106,20 +106,23 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	
 	// public methods
 	@Override
+	//method to connect to the client
 	public boolean connectClient()
 	{
 		if (this.mqttClient == null) {
 		    try {
 		    	_Logger.info("MQTT client instance not available, initializing client");
+		    	_Logger.info(this.brokerAddr+" "+this.clientID+" "+this.persistence);
 				this.mqttClient = new MqttClient(this.brokerAddr, this.clientID, this.persistence);
-				this.mqttClient.setCallback(this);
 			} catch (MqttException e) {
 				e.printStackTrace();
 			}
+		    this.mqttClient.setCallback(this);
 		}
 		if (! this.mqttClient.isConnected()) {
 		    try {
 		    	_Logger.info("Connecting to MQTT broker");
+		    	_Logger.info("connopts is "+this.connOpts);
 				this.mqttClient.connect(this.connOpts);
 				_Logger.info("Connected to MQTT broker");
 				return true;
@@ -132,7 +135,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 			_Logger.info("Already Connected to MQTT broker");
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -167,9 +170,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		if(this.mqttClient.isConnected()) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	
 	/**
@@ -197,8 +198,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 //			e.printStackTrace();
 //		}     
 //		return false;
-		byte[] message = msg.getBytes(StandardCharsets.UTF_8);
-		return publishMessage(topicName.getResourceName(), message, qos);
+		return publishMessage(topicName.getResourceName(), msg.getBytes(StandardCharsets.UTF_8), qos);
 	}
 
 	/**
@@ -382,6 +382,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	private void initCredentialConnectionParameters(String configSectionName)
 	{
 		// TODO: implement this
+		this.connOpts.setUserName("BBFF-wYK3jgMFd1ivT1O2BskL5vKY8XXpt3");
 	}
 	
 	/**
@@ -525,7 +526,7 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 		
 		// NOTE: you may want to log the exception stack trace if the call fails
 		try {
-//			_Logger.info("Publishing message to topic: " + topic);
+			_Logger.info("Publishing message to topic: " + topic);
 			
 			this.mqttClient.publish(topic, message);
 			

@@ -63,7 +63,7 @@ public class SystemStateData extends BaseIotData implements Serializable
 		if(this.sensorDataList == null || data == null) {
 			return false;
 		}
-		sensorDataList.add(data);
+		this.sensorDataList.add(data);
 		return true;
 		
 	}
@@ -73,7 +73,7 @@ public class SystemStateData extends BaseIotData implements Serializable
 		if(this.sysPerfDataList == null || data == null) {
 			return false;
 		}
-		sysPerfDataList.add(data);
+		this.sysPerfDataList.add(data);
 		return true;
 	}
 	

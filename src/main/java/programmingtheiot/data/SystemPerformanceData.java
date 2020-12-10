@@ -93,7 +93,7 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 	 */
 	protected String handleToString()
 	{
-		return null;
+		return "cpu utilization= "+this.cpuUtilization+"memory utilization= "+this.memoryUtilization+"disk utilization= "+this.diskUtilization;
 	}
 	
 	/* (non-Javadoc)

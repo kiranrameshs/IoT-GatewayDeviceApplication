@@ -23,18 +23,23 @@ public class SensorData extends BaseIotData implements Serializable
 
 	// private var's
 	private float value;
+	private int sensorType;
+	
     
 	// constructors
 	
 	public SensorData()
 	{
 		super();
-		value = 0.0f;
+		value=0.0f;
+		sensorType = DEFAULT_SENSOR_TYPE;
 	}
 	
 	public SensorData(int sensorType)
 	{
 		super();
+		value=0.0f;
+		this.sensorType = sensorType;
 	}
 	
 	

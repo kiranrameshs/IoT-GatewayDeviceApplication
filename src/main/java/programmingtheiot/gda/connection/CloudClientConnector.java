@@ -19,6 +19,7 @@ import programmingtheiot.common.ResourceNameEnum;
 import programmingtheiot.data.DataUtil;
 import programmingtheiot.data.SensorData;
 import programmingtheiot.data.SystemPerformanceData;
+import programmingtheiot.gda.app.DeviceDataManager;
 
 /**
  * Shell representation of class for student implementation.
@@ -26,27 +27,14 @@ import programmingtheiot.data.SystemPerformanceData;
  */
 public class CloudClientConnector implements ICloudClient
 {
-	
-	
-	
+
+	private static final Logger _Logger =
+			Logger.getLogger(DeviceDataManager.class.getName());
 	private String topicPrefix = "";
 	private MqttClientConnector mqttClient = null;
 	private IDataMessageListener dataMsgListener = null;
 	private int qosLevel =1;
-	// static
-	
-	private static final Logger _Logger =
-		Logger.getLogger(CloudClientConnector.class.getName());
-	
-	// private var's
-	
-	
-	// constructors
-	
-	/**
-	 * Default.
-	 * 
-	 */
+
 	public CloudClientConnector()
 	{
 		ConfigUtil configUtil = ConfigUtil.getInstance();
@@ -66,15 +54,16 @@ public class CloudClientConnector implements ICloudClient
 	}
 
 	@Override
+	//connect to the mqtt client
 	public boolean connectClient()
 	{
 		if (this.mqttClient == null) {
 			this.mqttClient = new MqttClientConnector(true);
 		}
 		
-		this.mqttClient.connectClient();
+		return this.mqttClient.connectClient();
 		
-		return this.mqttClient.isConnected();
+//		return this.mqttClient.isConnected();
 	}
 
 	@Override
@@ -187,8 +176,7 @@ public class CloudClientConnector implements ICloudClient
 	// public methods
 	private String createTopicName(ResourceNameEnum resource)
 	{
-		return this.topicPrefix + resource.getResourceName();
-				//getDeviceName() + "/" + resource.getResourceType();
+		return this.topicPrefix + resource.getResourceName() + "/" ;//+ resource.getResourceType();
 	}
 	
 	

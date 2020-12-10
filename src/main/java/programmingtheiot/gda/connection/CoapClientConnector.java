@@ -89,6 +89,7 @@ public class CoapClientConnector implements IRequestResponseClient
 	
 	// public methods
 	
+	@Override
 	public boolean sendDiscoveryRequest(int timeout)
 	{
 		this.clientConn.setURI("/.well-known/core");
@@ -99,6 +100,7 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	//Handling the generation of delete request
 	public boolean sendDeleteRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
 		CoapResponse response = null;
@@ -124,6 +126,7 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	//handling the generation of get request
 	public boolean sendGetRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
 		
@@ -150,6 +153,7 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	//handling the generation of post request
 	public boolean sendPostRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
@@ -175,6 +179,7 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	//handling the generation of put request
 	public boolean sendPutRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
@@ -200,6 +205,7 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	//setter for the data message listener
 	@Override
 	public boolean setDataMessageListener(IDataMessageListener listener)
 	{
@@ -221,6 +227,7 @@ public class CoapClientConnector implements IRequestResponseClient
 
 	
 	// private methods
+	// Starting the coAp client connector by calling the CoapClient class of californium
 	private void initClient() {
 		try {
 			this.clientConn = new CoapClient(this.serverAddr);

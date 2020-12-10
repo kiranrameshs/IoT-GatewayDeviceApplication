@@ -8,6 +8,8 @@
 
 package programmingtheiot.gda.app;
 
+import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import programmingtheiot.common.ConfigConst;
