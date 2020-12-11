@@ -22,19 +22,24 @@ public class SensorData extends BaseIotData implements Serializable
 	
 
 	// private var's
-	private float val;
+	private float value;
+	private int sensorType;
+	
     
 	// constructors
 	
 	public SensorData()
 	{
 		super();
-		val = 0.0f;
+		value=0.0f;
+		sensorType = DEFAULT_SENSOR_TYPE;
 	}
 	
 	public SensorData(int sensorType)
 	{
 		super();
+		value=0.0f;
+		this.sensorType = sensorType;
 	}
 	
 	
@@ -42,12 +47,12 @@ public class SensorData extends BaseIotData implements Serializable
 	
 	public float getValue()
 	{
-		return this.val;
+		return this.value;
 	}
 	
 	public void setValue(float val)
 	{
-		this.val = val;
+		this.value = val;
 	}
 	/**
 	 * Called by superClass handleUpdate
@@ -61,13 +66,6 @@ public class SensorData extends BaseIotData implements Serializable
 		this.setValue(data.getValue());
 	}
 	
-	
-	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
 		

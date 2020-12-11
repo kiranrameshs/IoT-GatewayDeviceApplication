@@ -7,7 +7,7 @@
  * functionality, constants and interfaces (if there are any)
  * provided within in order to meet the needs of your specific
  * Programming the Internet of Things project.
- */ 
+ */
 //run this app
 package programmingtheiot.gda.app;
 
@@ -20,45 +20,36 @@ import programmingtheiot.gda.system.SystemPerformanceManager;
  * Main GDA application.
  * 
  */
-public class GatewayDeviceApp
-{
+public class GatewayDeviceApp {
 	// static
-	private static final Logger _Logger =
-		Logger.getLogger(GatewayDeviceApp.class.getName());
-	
-	public static final long DEFAULT_TEST_RUNTIME = 60000L;
-
+	private static final Logger _Logger = Logger.getLogger(GatewayDeviceApp.class.getName());
+	public static final long DEFAULT_TEST_RUNTIME = 600000L;
 	private SystemPerformanceManager sysPerfManager;
 	private DeviceDataManager devDataManager;
-	
+
 	// private var's
-	
 	// constructors
-	
 	/**
 	 * Constructor.
 	 * 
 	 * @param args
 	 */
-	public GatewayDeviceApp(String[] args)
-	{
+	public GatewayDeviceApp(String[] args) {
 		super();
 		_Logger.info("Initializing GDA...");
 		this.sysPerfManager = new SystemPerformanceManager(10);
 		this.devDataManager = new DeviceDataManager();
 		parseArgs(args);
 	}
-	
-	
+
 	// static
-	
+
 	/**
 	 * Main application entry point.
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		GatewayDeviceApp gwApp = new GatewayDeviceApp(args);
 		gwApp.startApp();
 		try {
@@ -68,16 +59,13 @@ public class GatewayDeviceApp
 		}
 		gwApp.stopApp(0);
 	}
-	
-	
+
 	// public methods
-	
+
 	/**
 	 * Initializes and starts the application.
-	 * 
 	 */
-	public void startApp()
-	{
+	public void startApp() {
 		_Logger.info("Starting GDA...");
 		try {
 			_Logger.info("GDA started successfully.");
@@ -87,14 +75,12 @@ public class GatewayDeviceApp
 			stopApp(-1);
 		}
 	}
-	
+
 	/**
 	 * Stops the application.
-	 * 
 	 * @param code The exit code to pass to {@link System.exit()}
 	 */
-	public void stopApp(int code)
-	{
+	public void stopApp(int code) {
 		_Logger.info("Stopping GDA...");
 		try {
 			devDataManager.stopManager();
@@ -104,34 +90,32 @@ public class GatewayDeviceApp
 		}
 		System.exit(code);
 	}
-	
+
 	// private methods
-	
+
 	/**
 	 * Load the config file.
-	 * 
-	 * 
 	 * @param configFile The name of the config file to load.
 	 */
-	private void initConfig(String configFile)
-	{
-		_Logger.log(Level.INFO, "Attempting to load configuration: {0}", (configFile != null ? configFile : "Default."));
+	private void initConfig(String configFile) {
+		_Logger.log(Level.INFO, "Attempting to load configuration: {0}",
+				(configFile != null ? configFile : "Default."));
 	}
-	
+
 	/**
 	 * Parse any arguments passed in on app startup.
 	 * <p>
-	 * This method should be written to check if any valid command line args are provided,
-	 * including the name of the config file. Once parsed, call {@link #initConfig(String)}
-	 * with the name of the config file, or null if the default should be used.
+	 * This method should be written to check if any valid command line args are
+	 * provided, including the name of the config file. Once parsed, call
+	 * {@link #initConfig(String)} with the name of the config file, or null if the
+	 * default should be used.
 	 * <p>
 	 * If any command line args conflict with the config file, the config file
 	 * in-memory content should be overridden with the command line argument(s).
 	 * 
 	 * @param args The non-null and non-empty args array.
 	 */
-	private void parseArgs(String[] args)
-	{
+	private void parseArgs(String[] args) {
 		String configFile = null;
 		if (args != null) {
 			_Logger.log(Level.INFO, "Parsing {0} command line args.", args.length);

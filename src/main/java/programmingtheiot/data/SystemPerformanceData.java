@@ -9,6 +9,7 @@
 package programmingtheiot.data;
 
 import java.io.Serializable;
+import programmingtheiot.common.ConfigConst;
 
 /**
  * Shell representation of class for student implementation.
@@ -26,12 +27,15 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
     
 	// constructors
 	
+	/**
+	 * Default.
+	 * 
+	 */
 	public SystemPerformanceData()
 	{
 		super();
-		cpuUtilization = 0.0f;
-		memoryUtilization  = 0.0f;
-		diskUtilization  = 0.0f;
+		
+		super.setName(ConfigConst.SYS_PERF_DATA);
 	}
 	
 	
@@ -67,12 +71,11 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 		this.memoryUtilization = val;
 	}
 	/**
-	 * Called by superClass handleUpdate
+	 * Called by superClass handleUpdate to update the the data attributes
 	 * @param SystemPerformanceData
 	 */
 	public void updateData(SystemPerformanceData data)
 	{
-		
 		super.setName(data.getName());
 		super.setStateData(data.getStateData());
 		super.setStatusCode(data.getStatusCode());
@@ -81,20 +84,11 @@ public class SystemPerformanceData extends BaseIotData implements Serializable
 		this.setMemoryUtilization(data.getMemoryUtilization());
 	}
 	
-	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleToString()
-	 */
 	protected String handleToString()
 	{
-		return null;
+		return "cpu utilization= "+this.cpuUtilization+"memory utilization= "+this.memoryUtilization+"disk utilization= "+this.diskUtilization;
 	}
 	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
 	}

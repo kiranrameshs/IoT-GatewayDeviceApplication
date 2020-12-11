@@ -67,6 +67,7 @@ public class ConfigConst
 	public static final String GDA_MGMT_STATUS_MSG_RESOURCE  = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + MGMT_STATUS_MSG;
 	public static final String GDA_MGMT_CMD_MSG_RESOURCE     = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + MGMT_STATUS_CMD;
 	public static final String GDA_SYSTEM_PERF_MSG_RESOURCE  = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + SYSTEM_PERF_MSG;
+	public static final String GDA_CLOUD_GATEWAY_MSG_RESOURCE  = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + CLOUD_SERVICE;
 
 	/*****
 	 * Configuration Sections, Keys and Defaults
@@ -131,6 +132,15 @@ public class ConfigConst
 	public static final String SMTP_PROP_PORT_KEY       = "mail.smtp.port";
 	public static final String SMTP_PROP_AUTH_KEY       = "mail.smtp.auth";
 	public static final String SMTP_PROP_ENABLE_TLS_KEY = "mail.smtp.starttls.enable";
+	public static final String HUMIDITY_SENSOR_FLOOR =    "humiditySimFloor";
+	public static final String HUMIDITY_SENSOR_CEILING =    "humiditySimCeiling";
+	public static final String SYS_PERF_DATA  = "SysPerfData";
+	public static final String SYS_STATE_DATA = "SysStateData";
+
+	public static final String CPU_UTIL_NAME  = "CpuUtil";
+	public static final String DISK_UTIL_NAME = "DiskUtil";
+	public static final String MEM_UTIL_NAME  = "MemUtil";
+	public static final String BASE_TOPIC_KEY = "baseTopic";
 	
 	
 	// constructors

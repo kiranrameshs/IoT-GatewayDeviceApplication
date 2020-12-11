@@ -71,7 +71,7 @@ public abstract class BaseIotData implements Serializable
 	
 	public long getTimeStampMillis()
 	{
-		return 0L;
+		return this.timeStampMillis;
 	}
 	
 	public boolean hasError()

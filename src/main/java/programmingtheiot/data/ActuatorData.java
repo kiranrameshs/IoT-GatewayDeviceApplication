@@ -10,6 +10,12 @@ package programmingtheiot.data;
 
 import java.io.Serializable;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import programmingtheiot.common.IDataMessageListener;
+import programmingtheiot.common.ResourceNameEnum;
+
 /**
  * Shell representation of class for student implementation.
  *
@@ -20,7 +26,6 @@ public class ActuatorData extends BaseIotData implements Serializable
 	public static final int DEFAULT_COMMAND = 0;
 	public static final int COMMAND_OFF = DEFAULT_COMMAND;
 	public static final int COMMAND_ON = 1;
-	
 	
 	// private var's
     private float val;
@@ -33,10 +38,9 @@ public class ActuatorData extends BaseIotData implements Serializable
 	public ActuatorData()
 	{
 		super();
-		val = 0.0f;
-		command = 0;
+		this.val = 0.0f;
+		this.command=DEFAULT_COMMAND;
 	}
-	
 	
 	// public methods
 	/**
@@ -78,16 +82,12 @@ public class ActuatorData extends BaseIotData implements Serializable
 		this.setValue(data.getValue());
 		this.setCommand(data.getCommand());
 	}
-	
-	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
+
 	protected void handleUpdateData(BaseIotData data)
 	{
 		
 	}
+	
+	
 	
 }

@@ -29,7 +29,6 @@ import programmingtheiot.gda.connection.handlers.GenericCoapResourceHandler;
 public class CoapServerGateway
 {
 	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(CoapServerGateway.class.getName());
 	
@@ -38,7 +37,6 @@ public class CoapServerGateway
 	private IDataMessageListener dataMsgListener = null;
 	
 	// constructors
-	
 	/**
 	 * Default.
 	 * 
@@ -75,15 +73,15 @@ public class CoapServerGateway
 
 	
 	// public methods
-	
+	/**
+	 * break out the hierarchy of names and build the resource handler generation(s) as needed, checking if any parent already
+	 * exists - and if so, add to the existing resource
+	 * @param resource
+	 */
 	public void addResource(ResourceNameEnum resource)
 	{
 		if (resource != null) {
-			// break out the hierarchy of names and build the resource
-			// handler generation(s) as needed, checking if any parent already
-			// exists - and if so, add to the existing resource
 			_Logger.info("Adding server resource handler chain: " + resource.getResourceName());
-			
 			createAndAddResourceChain(resource);
 		}
 	}
@@ -110,9 +108,7 @@ public class CoapServerGateway
 		return true;
 	}
 	
-	
 	// private methods
-	
 	private void createAndAddResourceChain(ResourceNameEnum resource)
 	{
 		List<String> resourceNames = resource.getResourceNameChain();

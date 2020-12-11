@@ -28,13 +28,13 @@ public class GenericCoapResponseHandler implements CoapHandler  {
 		if (response != null) {
 			OptionSet options = response.getOptions();
 			
-			_Logger.info("Processing CoAP response. Options: " + options);
-			_Logger.info("Processing CoAP response. MID: " + response.advanced().getMID());
-			_Logger.info("Processing CoAP response. Token: " + response.advanced().getTokenString());
-			_Logger.info("Processing CoAP response. Code: " + response.getCode());
+//			_Logger.info("Processing CoAP response. Options: " + options);
+//			_Logger.info("Processing CoAP response. MID: " + response.advanced().getMID());
+//			_Logger.info("Processing CoAP response. Token: " + response.advanced().getTokenString());
+//			_Logger.info("Processing CoAP response. Code: " + response.getCode());
 			
 			// TODO: parse payload and notify listener
-			_Logger.info(" --> Payload: " + response.getResponseText());
+//			_Logger.info(" --> Payload: " + response.getResponseText());
 			
 			if (this.dataMsgListener != null) {
 				// TODO: send listener the response
