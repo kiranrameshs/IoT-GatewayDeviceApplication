@@ -4,7 +4,7 @@
  * It is provided as a simple shell to guide the student and assist with
  * implementation for the Programming the Internet of Things exercises,
  * and designed to be modified by the student as needed.
- */ 
+ */
 
 package programmingtheiot.gda.app;
 
@@ -39,12 +39,10 @@ import programmingtheiot.common.ResourceNameEnum;
  * Shell representation of class for student implementation.
  *
  */
-public class DeviceDataManager implements IDataMessageListener
-{
+public class DeviceDataManager implements IDataMessageListener {
 	// static
-	private static final Logger _Logger =
-		Logger.getLogger(DeviceDataManager.class.getName());
-	
+	private static final Logger _Logger = Logger.getLogger(DeviceDataManager.class.getName());
+
 	// private var's
 	private SystemPerformanceManager sysPerfManager;
 	private boolean enableMqttClient = true;
@@ -60,30 +58,35 @@ public class DeviceDataManager implements IDataMessageListener
 	private CoapServerGateway coapServer = null;
 	private int humiditySensorFloor = 0;
 	private int humiditySensorCeiling = 0;
-	
+
 	// constructors
-	public DeviceDataManager()
-	{
+	/**
+	 * Initialize the predicates using the configurations in the config const file and using them initialize the connections
+	 */
+	public DeviceDataManager() {
 		super();
 		ConfigUtil configUtil = ConfigUtil.getInstance();
-		this.enableMqttClient  = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
-		this.enableCoapServer  = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_SERVER_KEY);
+		this.enableMqttClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
+		this.enableCoapServer = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_SERVER_KEY);
 		this.enableCloudClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_CLOUD_CLIENT_KEY);
-		this.enableSmtpClient  = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_SMTP_CLIENT_KEY);
-		this.enablePersistenceClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_PERSISTENCE_CLIENT_KEY);
+		this.enableSmtpClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_SMTP_CLIENT_KEY);
+		this.enablePersistenceClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE,ConfigConst.ENABLE_PERSISTENCE_CLIENT_KEY);
 		this.humiditySensorFloor = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_FLOOR);
-		this.humiditySensorCeiling = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_CEILING);
+		this.humiditySensorCeiling = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE,ConfigConst.HUMIDITY_SENSOR_CEILING);
 		initConnections();
 		this.sysPerfManager = new SystemPerformanceManager(10);
 	}
-	
-	public DeviceDataManager(
-		boolean enableMqttClient,
-		boolean enableCoapClient,
-		boolean enableCloudClient,
-		boolean enableSmtpClient,
-		boolean enablePersistenceClient)
-	{
+
+	/**
+	 * Overloaded constructor to pass predicates as the arg to handle a particular scenario of handling only few connections 
+	 * @param enableMqttClient
+	 * @param enableCoapClient
+	 * @param enableCloudClient
+	 * @param enableSmtpClient
+	 * @param enablePersistenceClient
+	 */
+	public DeviceDataManager(boolean enableMqttClient, boolean enableCoapClient, boolean enableCloudClient,
+			boolean enableSmtpClient, boolean enablePersistenceClient) {
 		super();
 		this.enableMqttClient = enableMqttClient;
 		this.enableCloudClient = enableCloudClient;
@@ -93,206 +96,201 @@ public class DeviceDataManager implements IDataMessageListener
 		initConnections();
 		this.sysPerfManager = new SystemPerformanceManager(10);
 	}
-	
+
 	// public methods
-	
 	/**
-	 * Handles Actuator command response by storing data
+	 * Handles Actuator command response by storing data if persistence client is available
 	 */
 	@Override
-	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data)
-	{
+	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data) {
 		try {
-			if(isPersistentClientActive)
-			{
+			if (isPersistentClientActive) {
 				this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
 				return true;
 			}
-				
-		}
-		catch(Exception ex) {
+		} catch (Exception ex) {
 			_Logger.info("Exception occured: " + ex.getMessage());
 		}
-		
 		return false;
 	}
-	
+
 	/**
-	 * Handles incoming message by converting message to Actuator or System state data
-	**/
+	 * Handles incoming message by converting message to Actuator or System state and call Incoming Data Analysis
+	 * message is the input
+	 **/
 	@Override
-	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
-	{
-		_Logger.info("handleIncomingMessage has been called");
+	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg) {
 		DataUtil dataUtil = DataUtil.getInstance();
 		try {
 			ActuatorData ad = dataUtil.jsonToActuatorData(msg);
-			handleIncomingDataAnalysis(resourceName,ad);
-		}
-		catch(Exception ex) {
+			handleIncomingDataAnalysis(resourceName, ad);
+		} catch (Exception ex) {
 			SystemStateData sd = dataUtil.jsonToSystemStateData(msg);
-			handleIncomingDataAnalysis(resourceName,sd);
+			handleIncomingDataAnalysis(resourceName, sd);
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Handles sensor message and store the data
-	**/ 
+	 * Handles sensor message, check exceptional case is reached using floor, ceiling values, send an Actuator COmmand Resp if triggered, store data
+	 * if persistence client is available
+	 **/
 	@Override
-	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data)
-	{
-		_Logger.info("handleSensorMessage has been called");
+	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data) {
 		DataUtil dataUtil = DataUtil.getInstance();
-	
-		
 		try {
-			if(data.getValue() <this.humiditySensorFloor || data.getValue() > this.humiditySensorCeiling ) {
-				
+			if (data.getValue() < this.humiditySensorFloor || data.getValue() > this.humiditySensorCeiling) {
 				ActuatorData ad = new ActuatorData();
 				ad.setCommand(1);
 				ad.setStateData(data.getStateData());
 				this.mqttClient.publishMessage(ResourceNameEnum.CDA_ACTUATOR_CMD_RESOURCE, ad.toString(), 0);
 				String jsonData = dataUtil.actuatorDataToJson(ad);
 				handleUpstreamTransmission(ResourceNameEnum.CDA_ACTUATOR_CMD_RESOURCE, jsonData);
-				if(isPersistentClientActive)
-				{
-					
+				if (isPersistentClientActive) {
 					this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
-					
 				}
 				return true;
 			}
-		}
-		catch(Exception ex) {
+		} catch (Exception ex) {
 			_Logger.info("Exception occured: " + ex.getMessage());
 		}
 		return false;
 	}
 
 	/**
-	 * handles system performance data by storing it and converting to json
+	 * handles system performance data by storing it and converting to json f persistence client is available
 	 */
 	@Override
-	public boolean handleSystemPerformanceMessage(ResourceNameEnum resourceName, SystemPerformanceData data)
-	{
+	public boolean handleSystemPerformanceMessage(ResourceNameEnum resourceName, SystemPerformanceData data) {
 		_Logger.info("handleSystemPerformanceMessage has been called");
 		DataUtil dataUtil = DataUtil.getInstance();
 		try {
-			if(isPersistentClientActive)
-			{
+			if (isPersistentClientActive) {
 				this.persistenceClient.storeData(resourceName.getResourceName(), 0, data);
 				return true;
 			}
-		}
-		catch(Exception ex) {
+		} catch (Exception ex) {
 			_Logger.info("Exception occured: " + ex.getMessage());
 		}
 		return false;
 	}
-	
+
 	/**
-	 * starts data device manager.
+	 * Starts data device manager, CloudCLient/PersistenceClient based on configurations using MQTT/CoAP 
 	 */
-	public void startManager()
-	{
+	public void startManager() {
 		_Logger.info("Data Device Manager has started");
 		this.sysPerfManager.startManager();
-		if(this.enableCloudClient) {
-			if(this.cloudClient.connectClient()) {
+		if (this.enableCloudClient) {
+			if (this.cloudClient.connectClient()) {
 				_Logger.info("connected to cloudClientConnector successfully");
-			}else {
+			} else {
 				_Logger.info("failed to connect to cloudClientConnector");
 			}
 		}
-		if(this.enableMqttClient) {
-			if(this.mqttClient.connectClient()) {
+		if (this.enableMqttClient) {
+			if (this.mqttClient.connectClient()) {
 				_Logger.info("connected to mqttClientConnector successfully");
-			}else {
+			} else {
 				_Logger.info("failed to connect to mqttClientConnector");
 			}
 		}
-		if(this.enablePersistenceClient) {
-			if(this.persistenceClient.connectClient()) {
+		if (this.enablePersistenceClient) {
+			if (this.persistenceClient.connectClient()) {
 				_Logger.info("connected to redisPersistenceAdapter successfully");
-						isPersistentClientActive = true;
-			}else {
+				isPersistentClientActive = true;
+			} else {
 				_Logger.info("failed to connect to redisPersistenceAdapter");
 			}
 		}
-		if(this.enableCoapServer) {
-			if(this.coapServer.startServer()) {
+		if (this.enableCoapServer) {
+			if (this.coapServer.startServer()) {
 				_Logger.info("connected to coapServerGateway successfully");
-			}else {
+			} else {
 				_Logger.info("failed to connect to coapServerGateway");
 			}
 		}
 	}
-	
+
 	/**
-	 * stops data device manager.
+	 * Stops data device manager and CloudCLient/PersistenceClient based on configurations using MQTT/CoAP  if started by the manager
 	 */
-	public void stopManager()
-	{
+	public void stopManager() {
 		_Logger.info("Data Device Manager has stopped");
 		this.sysPerfManager.stopManager();
-		if(this.enableCloudClient) {
-			if(this.cloudClient.disconnectClient()) {
+		if (this.enableCloudClient) {
+			if (this.cloudClient.disconnectClient()) {
 				_Logger.info("disconnected from cloudClientConnector successfully");
-			}else {
+			} else {
 				_Logger.info("failed to disconnect from cloudClientConnector");
 			}
 		}
-		if(this.enableMqttClient) {
-			if(this.mqttClient.disconnectClient()) {
+		if (this.enableMqttClient) {
+			if (this.mqttClient.disconnectClient()) {
 				_Logger.info("disconnected from mqttClientConnector successfully");
-			}else {
+			} else {
 				_Logger.info("failed to disconnect from mqttClientConnector");
 			}
 		}
-		if(this.enablePersistenceClient) {
-			if(this.persistenceClient.disconnectClient()) {
+		if (this.enablePersistenceClient) {
+			if (this.persistenceClient.disconnectClient()) {
 				_Logger.info("disconnected from redisPersistenceAdapter successfully");
 				isPersistentClientActive = false;
-			}else {
+			} else {
 				_Logger.info("failed to disconnect from redisPersistenceAdapter");
 			}
 		}
-		if(this.enableCoapServer) {
-			if(this.coapServer.stopServer()) {
+		if (this.enableCoapServer) {
+			if (this.coapServer.stopServer()) {
 				_Logger.info("disconnected from coapServerGateway successfully");
-			}else {
+			} else {
 				_Logger.info("failed to disconnect from coapServerGateway");
 			}
 		}
 	}
 
 	// private methods
-	
+
 	/**
-	 * Initializes the enabled connections. This will NOT start them, but only create the
-	 * instances that will be used in the {@link #startManager() and #stopManager()) methods.
+	 * Initializes the enabled connections. This will NOT start them, but only
+	 * create the instances that will be used in the {@link #startManager() and
+	 * #stopManager()) methods.
 	 */
-	private void initConnections()
-	{
+	private void initConnections() {
 		this.cloudClient = new CloudClientConnector();
 		this.coapServer = new CoapServerGateway();
 		this.smtpClient = new SmtpClientConnector();
 		this.mqttClient = new MqttClientConnector();
 		this.persistenceClient = new RedisPersistenceAdapter();
 	}
-	
-	// handles IncomingDataAnalysis for actuator
-	private void handleIncomingDataAnalysis(ResourceNameEnum resourceName, ActuatorData data){
-		_Logger.fine("handleIncomingDataAnalysis with Actuator data has been called");
+
+	/**
+	 * handles IncomingDataAnalysis for actuator
+	 * 
+	 * @param resourceName
+	 * @param data
+	 */
+	private void handleIncomingDataAnalysis(ResourceNameEnum resourceName, ActuatorData data) {
+		_Logger.fine(" Incoming Data Analysis with Actuator");
 	}
-	// handles IncomingDataAnalysis for SystemStateData
-	private void handleIncomingDataAnalysis(ResourceNameEnum resourceName,SystemStateData data){
-		_Logger.fine("handleIncomingDataAnalysis with SystemStateData has been called");
+
+	/**
+	 * handles IncomingDataAnalysis for SystemStateData
+	 * 
+	 * @param resourceName
+	 * @param data
+	 */
+	private void handleIncomingDataAnalysis(ResourceNameEnum resourceName, SystemStateData data) {
+		_Logger.fine("Incoming Data Analysis with SystemStateData");
 	}
-	
+
+	/**
+	 * handles UpstreamTransmission
+	 * 
+	 * @param resourceName
+	 * @param data
+	 */
 	private void handleUpstreamTransmission(ResourceNameEnum resourceName, String msg) {
 		_Logger.fine("handleUpstreamTransmission has been called");
 	}
-	
 }

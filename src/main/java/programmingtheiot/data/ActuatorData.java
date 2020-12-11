@@ -27,7 +27,6 @@ public class ActuatorData extends BaseIotData implements Serializable
 	public static final int COMMAND_OFF = DEFAULT_COMMAND;
 	public static final int COMMAND_ON = 1;
 	
-	
 	// private var's
     private float val;
     private int command;
@@ -42,7 +41,6 @@ public class ActuatorData extends BaseIotData implements Serializable
 		this.val = 0.0f;
 		this.command=DEFAULT_COMMAND;
 	}
-	
 	
 	// public methods
 	/**
@@ -84,13 +82,7 @@ public class ActuatorData extends BaseIotData implements Serializable
 		this.setValue(data.getValue());
 		this.setCommand(data.getCommand());
 	}
-	
-	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
+
 	protected void handleUpdateData(BaseIotData data)
 	{
 		

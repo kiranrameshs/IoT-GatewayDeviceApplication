@@ -66,13 +66,6 @@ public class SensorData extends BaseIotData implements Serializable
 		this.setValue(data.getValue());
 	}
 	
-	
-	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
 		

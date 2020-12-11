@@ -33,7 +33,6 @@ import programmingtheiot.gda.connection.handlers.GenericCoapResponseHandler;
 public class CoapClientConnector implements IRequestResponseClient
 {
 	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(CoapClientConnector.class.getName());
 	
@@ -49,14 +48,12 @@ public class CoapClientConnector implements IRequestResponseClient
 	
 	/**
 	 * Default.
-	 * 
 	 * All config data will be loaded from the config file.
 	 */
 	public CoapClientConnector()
 	{
 		ConfigUtil config = ConfigUtil.getInstance();
 		this.host = config.getProperty(ConfigConst.COAP_GATEWAY_SERVICE, ConfigConst.HOST_KEY, ConfigConst.DEFAULT_HOST);
-
 		if (config.getBoolean(ConfigConst.COAP_GATEWAY_SERVICE, ConfigConst.ENABLE_CRYPT_KEY)) {
 			this.protocol = ConfigConst.DEFAULT_COAP_SECURE_PROTOCOL;
 			this.port     = config.getInteger(ConfigConst.COAP_GATEWAY_SERVICE, ConfigConst.SECURE_PORT_KEY, ConfigConst.DEFAULT_COAP_SECURE_PORT);
@@ -64,15 +61,9 @@ public class CoapClientConnector implements IRequestResponseClient
 			this.protocol = ConfigConst.DEFAULT_COAP_PROTOCOL;
 			this.port     = config.getInteger(ConfigConst.COAP_GATEWAY_SERVICE, ConfigConst.PORT_KEY, ConfigConst.DEFAULT_COAP_PORT);
 		}
-		
-		// NOTE: URL does not have a protocol handler for "coap",
-		// so we need to construct the URL manually
 		this.serverAddr = this.protocol + "://" + this.host + ":" + this.port;
-
 		initClient();
-
 		_Logger.info("Using URL for server conn: " + this.serverAddr);
-			
 	}
 		
 	/**
@@ -86,126 +77,108 @@ public class CoapClientConnector implements IRequestResponseClient
 	{
 	}
 	
-	
 	// public methods
-	
+	/**
+	 * Use Generic CoAP Response Handler to send discover Request to a URI
+	 */
 	@Override
 	public boolean sendDiscoveryRequest(int timeout)
 	{
 		this.clientConn.setURI("/.well-known/core");
-
-		// TODO: implement your own Discovery-specific response handler if you'd like, using the parsing logic from Option 2
 		GenericCoapResponseHandler responseHandler = new GenericCoapResponseHandler(this.dataMsgListener);
 		this.clientConn.get(responseHandler);
 		return true;
 	}
 
-	//Handling the generation of delete request
+	/**
+	 * Handling the generation of delete request
+	 * @param resource
+	 * @param enableCON
+	 * @param timeout
+	 * @return
+	 */
 	public boolean sendDeleteRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
 		CoapResponse response = null;
-
 		if (enableCON) {
 			this.clientConn.useCONs();
 		} else {
 			this.clientConn.useNONs();
 		}
-
 		this.clientConn.setURI(this.serverAddr + "/" + resource.getResourceName());
-
-		// TODO: This is NOT a performance-savvy way to use a response handler, as it will require
-		// creating a new response handler with every call to this method. This is AN EXAMPLE ONLY.
-		// A better solution would involve creation of a resource and / or request type-specific
-		// response handler at construction time and storing it in a class-scoped variable for
-		// re-use in this call.
 		CoapHandler responseHandler = new GenericCoapResponseHandler(this.dataMsgListener);
 		this.clientConn.delete(responseHandler);
-
-		// TODO: you may want to implement a unique, DELETE and resource-specific CoapHandler modeled after GenericCoapResponseHandler.
-
 		return true;
 	}
 
-	//handling the generation of get request
+	/**
+	 * handling the generation of get request
+	 * @param resource
+	 * @param enableCON
+	 * @param timeout
+	 * @return
+	 */
 	public boolean sendGetRequest(ResourceNameEnum resource, boolean enableCON, int timeout)
 	{
-		
 		CoapResponse response = null;
-
 		if (enableCON) {
 			this.clientConn.useCONs();
 		} else {
 			this.clientConn.useNONs();
 		}
-
 		this.clientConn.setURI(this.serverAddr + "/" + resource.getResourceName());
-
-		// TODO: This is NOT a performance-savvy way to use a response handler, as it will require
-		// creating a new response handler with every call to this method. This is AN EXAMPLE ONLY.
-		// A better solution would involve creation of a resource and / or request type-specific
-		// response handler at construction time and storing it in a class-scoped variable for
-		// re-use in this call.
 		CoapHandler responseHandler = new GenericCoapResponseHandler(this.dataMsgListener);
 		this.clientConn.get(responseHandler);
-
-		// TODO: you may want to implement a unique, GET and resource-specific CoapHandler modeled after GenericCoapResponseHandler.
-
 		return true;
 	}
 
-	//handling the generation of post request
+	/**
+	 * handling the generation of post request
+	 * @param resource
+	 * @param enableCON
+	 * @param payload
+	 * @param timeout
+	 * @return
+	 */
 	public boolean sendPostRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
-
 		if (enableCON) {
 			this.clientConn.useCONs();
 		} else {
 			this.clientConn.useNONs();
 		}
-
 		this.clientConn.setURI(this.serverAddr + "/" + resource.getResourceName());
-
-		// TODO: This is NOT a performance-savvy way to use a response handler, as it will require
-		// creating a new response handler with every call to this method. This is AN EXAMPLE ONLY.
-		// A better solution would involve creation of a resource and / or request type-specific
-		// response handler at construction time and storing it in a class-scoped variable for
-		// re-use in this call.
 		CoapHandler responseHandler = new GenericCoapResponseHandler(this.dataMsgListener);
 		this.clientConn.post(responseHandler, payload, MediaTypeRegistry.TEXT_PLAIN);
-
-		// TODO: you may want to implement a unique, POST and resource-specific CoapHandler modeled after GenericCoapResponseHandler.
-
 		return true;
 	}
 
-	//handling the generation of put request
+	/**
+	 * handling the generation of put request
+	 * @param resource
+	 * @param enableCON
+	 * @param payload
+	 * @param timeout
+	 * @return
+	 */
 	public boolean sendPutRequest(ResourceNameEnum resource, boolean enableCON, String payload, int timeout)
 	{
 		CoapResponse response = null;
-
 		if (enableCON) {
 			this.clientConn.useCONs();
 		} else {
 			this.clientConn.useNONs();
 		}
-
 		this.clientConn.setURI(this.serverAddr + "/" + resource.getResourceName());
-
-		// TODO: This is NOT a performance-savvy way to use a response handler, as it will require
-		// creating a new response handler with every call to this method. This is AN EXAMPLE ONLY.
-		// A better solution would involve creation of a resource and / or request type-specific
-		// response handler at construction time and storing it in a class-scoped variable for
-		// re-use in this call.
 		CoapHandler responseHandler = new GenericCoapResponseHandler(this.dataMsgListener);
 		this.clientConn.put(responseHandler, payload, MediaTypeRegistry.TEXT_PLAIN);
-
-		// TODO: you may want to implement a unique, PUT and resource-specific CoapHandler modeled after GenericCoapResponseHandler.
-
 		return true;
 	}
-
-	//setter for the data message listener
+	
+	/**
+	 * setter for the data message listener
+	 */
 	@Override
 	public boolean setDataMessageListener(IDataMessageListener listener)
 	{
@@ -213,25 +186,32 @@ public class CoapClientConnector implements IRequestResponseClient
 		return true;
 	}
 
+	/**
+	 * Start the Observer
+	 */
 	@Override
 	public boolean startObserver(ResourceNameEnum resource, int ttl)
 	{
 		return false;
 	}
 
+	/**
+	 * Stop the Observer
+	 */
 	@Override
 	public boolean stopObserver(int timeout)
 	{
 		return false;
 	}
-
 	
 	// private methods
-	// Starting the coAp client connector by calling the CoapClient class of californium
+	// 
+	/**
+	 * Starting the coAp client connector by calling the CoapClient class of californium
+	 */
 	private void initClient() {
 		try {
 			this.clientConn = new CoapClient(this.serverAddr);
-			
 			_Logger.info("Created client connection to server / resource: " + this.serverAddr);
 		} catch (Exception e) {
 			_Logger.log(Level.SEVERE, "Failed to connect to broker: " + (this.clientConn != null ? this.clientConn.getURI() : this.serverAddr), e);
@@ -240,27 +220,22 @@ public class CoapClientConnector implements IRequestResponseClient
 
 	@Override
 	public boolean sendDeleteRequest(ResourceNameEnum resource, int timeout) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean sendGetRequest(ResourceNameEnum resource, int timeout) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean sendPostRequest(ResourceNameEnum resource, String payload, int timeout) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean sendPutRequest(ResourceNameEnum resource, String payload, int timeout) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
 	
 }
