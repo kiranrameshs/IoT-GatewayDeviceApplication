@@ -66,35 +66,31 @@ public class GenericCoapResourceHandler extends CoapResource
 	}
 	
 	@Override
+	/**
+	 * validate 'context'
+	 * accept the request
+	 * retrieve the requested data and generate a response message: 'msg'
+	 * send an appropriate response
+	 */
 	public void handleGET(CoapExchange context)
 	{
-	    // TODO: validate 'context'
-	    
-	    // accept the request
-	    context.accept();
-	    
-	    // TODO: retrieve the requested data and generate a response message: 'msg'
-	    String msg = "CoAp client requested GET"; // fill this in
-	    
-	    // send an appropriate response
+	   context.accept();
+	    String msg = "CoAp client requested GET";
 	    context.respond(ResponseCode.VALID, msg);
 	}
 	
 	@Override
+	/**
+	 * validate 'context'
+	 * accept the request
+	 * retrieve the requested data and generate a response message: 'msg'
+	 * send an appropriate response
+	 */
 	public void handlePOST(CoapExchange context)
 	{
-	    // TODO: validate 'context'
-	    
-	    // accept the request
 	    context.accept();
-	    
-	    // TODO: create (or update) the resource with the payload
 	    String payload = context.getRequestText();
-	    
-	    // TODO: generate a response message: 'msg'
-	    String msg = "CoAp Client requested POST"; // fill this in
-	    
-	    // send an appropriate response
+	    String msg = "CoAp Client requested POST";
 	    context.respond(ResponseCode.CREATED, msg);
 	}
 	

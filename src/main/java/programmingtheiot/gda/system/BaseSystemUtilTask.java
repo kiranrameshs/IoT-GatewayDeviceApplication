@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import programmingtheiot.data.SensorData;
 
 /**
- *
+ * Base System Util Task
  */
 public abstract class BaseSystemUtilTask
 {
@@ -47,6 +47,10 @@ public abstract class BaseSystemUtilTask
 		return this.latestSensorData;
 	}
 	
+	/**
+	 * generate telemetry and form the latest sensor data 
+	 * @return
+	 */
 	public float getTelemetryValue()
 	{
 		if(this.latestSensorData == null) {
@@ -56,9 +60,7 @@ public abstract class BaseSystemUtilTask
 		else {
 			return this.latestSensorData.getValue();
 		}
-		
 	}
-	
 	
 	// protected methods
 	

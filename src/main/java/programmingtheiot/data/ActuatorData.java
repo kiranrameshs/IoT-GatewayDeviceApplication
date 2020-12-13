@@ -17,7 +17,7 @@ import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
 
 /**
- * Shell representation of class for student implementation.
+ * Actuator Data class
  *
  */
 public class ActuatorData extends BaseIotData implements Serializable
@@ -30,16 +30,26 @@ public class ActuatorData extends BaseIotData implements Serializable
 	// private var's
     private float val;
     private int command;
+    private int actuatorType;
     
+	public int getActuatorType() {
+		return actuatorType;
+	}
+
+	public void setActuatorType(int actuatorType) {
+		this.actuatorType = actuatorType;
+	}
+
 	// constructors
 	/**
-	 * Default.
+	 * Default constructor
 	 */
 	public ActuatorData()
 	{
 		super();
 		this.val = 0.0f;
 		this.command=DEFAULT_COMMAND;
+		this.actuatorType = 0;
 	}
 	
 	// public methods
@@ -72,7 +82,7 @@ public class ActuatorData extends BaseIotData implements Serializable
 		this.val = val;
 	}
 	/**
-	 * Default.
+	 * update the Actuator Data with all its attributes
 	 */
 	public void updateData(ActuatorData data)
 	{
@@ -87,7 +97,5 @@ public class ActuatorData extends BaseIotData implements Serializable
 	{
 		
 	}
-	
-	
 	
 }

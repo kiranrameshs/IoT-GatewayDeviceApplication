@@ -15,7 +15,7 @@ import java.util.Date;
 import programmingtheiot.common.ConfigConst;
 
 /**
- * Shell representation of class for student implementation.
+ * 
  *
  */
 public abstract class BaseIotData implements Serializable

@@ -12,7 +12,7 @@ import java.io.Serializable;
 import programmingtheiot.common.ConfigConst;
 
 /**
- * Shell representation of class for student implementation.
+ * System Performance Data Class
  *
  */
 public class SystemPerformanceData extends BaseIotData implements Serializable

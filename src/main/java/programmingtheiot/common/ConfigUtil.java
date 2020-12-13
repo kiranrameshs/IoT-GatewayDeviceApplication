@@ -48,7 +48,6 @@ public class ConfigUtil
 	private boolean isLoaded = false;
 	private String  configFileName = ConfigConst.DEFAULT_CONFIG_FILE_NAME;
 	
-	
 	// constructors
 	
 	/**
@@ -73,7 +72,6 @@ public class ConfigUtil
 		initBackingProperties();
 		loadConfig();
 	}
-	
 	
 	// public methods
 	
@@ -267,11 +265,9 @@ public class ConfigUtil
 	public Properties getCredentials(String section)
 	{
 		Properties props = null;
-		
 		if (hasSection(section)) {
 			String credFileName = getProperty(section, ConfigConst.CRED_FILE_KEY);
 			FileInputStream fis = null;
-			
 			try {
 				props = new Properties();
 				fis = new FileInputStream(credFileName);
@@ -324,13 +320,13 @@ public class ConfigUtil
 	 * 
 	 * @param configFileName The configuration file name.
 	 * @return boolean True on success; false otherwise.
+	 * ensure config file exists
+	 * init the backing properties, or clear out the existing one
+	 * init the backing properties, or clear out the existing one
 	 */
 	private synchronized boolean loadConfig(String configFileName)
 	{
 		File cfgFile = new File(configFileName);
-		
-		// ensure config file exists
-		
 		if (! cfgFile.exists()) {
 			_Logger.log(
 				Level.WARNING,
@@ -339,10 +335,8 @@ public class ConfigUtil
 			
 			cfgFile = new File(ConfigConst.DEFAULT_CONFIG_FILE_NAME);
 		}
-		
 		if (cfgFile.exists()) {
 			try {
-				// init the backing properties, or clear out the existing one
 				initBackingProperties();
 				
 				sectionProperties.setFileName(cfgFile.getAbsoluteFile().toString());
@@ -362,14 +356,12 @@ public class ConfigUtil
 				"Default config file {0} doesn't exist. Config not set.",
 				cfgFile.getAbsolutePath());
 		}
-		
 		if (! isLoaded) {
 			_Logger.log(
 				Level.WARNING,
 				"System properties config file {0} doesn't exist. Using default.",
 				cfgFile.getAbsolutePath());
 		}
-		
 		return isLoaded;
 	}
 	

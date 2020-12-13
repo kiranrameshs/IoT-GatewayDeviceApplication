@@ -16,7 +16,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 /**
- * Shell representation of class for student implementation.
+ * Data Utility class to handle sensor, actuator and Sys perf data to json and vice versa
  *
  */
 public class DataUtil
@@ -37,8 +37,6 @@ public class DataUtil
 	
 	
 	// private var's
-	
-	
 	// constructors
 	
 	/**

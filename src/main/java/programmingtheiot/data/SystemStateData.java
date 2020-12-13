@@ -119,19 +119,11 @@ public class SystemStateData extends BaseIotData implements Serializable
 		this.setLocation(data.getLocation());
 	}
 	
-	// protected methods
-	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleToString()
-	 */
 	protected String handleToString()
 	{
 		return "";
 	}
 	
-	/* (non-Javadoc)
-	 * @see programmingtheiot.data.BaseIotData#handleUpdateData(programmingtheiot.data.BaseIotData)
-	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
 	}

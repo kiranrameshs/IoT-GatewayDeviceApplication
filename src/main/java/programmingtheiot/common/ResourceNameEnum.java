@@ -22,19 +22,16 @@ import java.util.List;
  */
 public enum ResourceNameEnum
 {
-	// static
-	
-	CDA_SENSOR_MSG_RESOURCE(ConfigConst.CDA_SENSOR_DATA_MSG_RESOURCE),
-	CDA_ACTUATOR_CMD_RESOURCE(ConfigConst.CDA_ACTUATOR_CMD_MSG_RESOURCE),
-	CDA_MGMT_STATUS_MSG_RESOURCE(ConfigConst.CDA_MGMT_STATUS_MSG_RESOURCE),
-	CDA_MGMT_STATUS_CMD_RESOURCE(ConfigConst.CDA_MGMT_CMD_MSG_RESOURCE),
-	GDA_MGMT_STATUS_MSG_RESOURCE(ConfigConst.GDA_MGMT_STATUS_MSG_RESOURCE),
-	GDA_MGMT_STATUS_CMD_RESOURCE(ConfigConst.GDA_MGMT_CMD_MSG_RESOURCE),
-	CDA_ACTUATOR_RESPONSE_RESOURCE(ConfigConst.CDA_ACTUATOR_RESPONSE_MSG_RESOURCE),
-	CDA_SYSTEM_PERF_MSG_RESOURCE(ConfigConst.CDA_SYSTEM_PERF_MSG_RESOURCE),
-	GDA_SYSTEM_PERF_MSG_RESOURCE(ConfigConst.GDA_SYSTEM_PERF_MSG_RESOURCE),
-	GDA_CLOUD_GATEWAY_MSG_RESOURCE(ConfigConst.GDA_CLOUD_GATEWAY_MSG_RESOURCE);
-	
+	CDA_SENSOR_MSG_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.SENSOR_MSG, false),
+	CDA_ACTUATOR_CMD_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.ACTUATOR_CMD, false),
+	CDA_ACTUATOR_RESPONSE_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.ACTUATOR_RESPONSE, false),
+	CDA_DISPLAY_RESPONSE_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.DISPLAY_CMD, false),
+	CDA_MGMT_STATUS_MSG_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.MGMT_STATUS_MSG, false),
+	CDA_MGMT_STATUS_CMD_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.MGMT_STATUS_CMD, false),
+	CDA_SYSTEM_PERF_MSG_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.CONSTRAINED_DEVICE, ConfigConst.SYSTEM_PERF_MSG, false),
+	GDA_MGMT_STATUS_MSG_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.MGMT_STATUS_MSG, false),
+	GDA_MGMT_STATUS_CMD_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.MGMT_STATUS_CMD, false),
+	GDA_SYSTEM_PERF_MSG_RESOURCE(ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.SYSTEM_PERF_MSG, false);
 	
 	private static final HashMap<String, ResourceNameEnum> _ResourceNameLookupMap = new HashMap<>();
 	
@@ -63,14 +60,17 @@ public enum ResourceNameEnum
 				return _ResourceNameLookupMap.get(valStr);
 			}
 		}
-		
 		return null;
 	}
 	
 	
 	// private var's
 	
+	private String deviceName = "";
+	private String productName = "";
 	private String resourceName = "";
+	private String resourceType = "";
+	private boolean isLocalToGDA = false;
 	
 	
 	// constructor
@@ -80,16 +80,39 @@ public enum ResourceNameEnum
 	 * 
 	 * @param resourceName
 	 */
-	private ResourceNameEnum(String resourceName)
+	private ResourceNameEnum(String productName, String deviceName, String resourceType, boolean isLocalToGda)
 	{
-		this.resourceName = resourceName;
+		this.resourceName = productName + "/" + deviceName + "/" + resourceType;
+		this.productName = productName;
+		this.deviceName = deviceName;
+		this.resourceType = resourceType;
+		this.isLocalToGDA = isLocalToGda;
 	}
 	
 	
 	// public methods
 	
 	/**
-	 * 
+	 * Get Device name.
+	 * @return String
+	 */
+	public String getDeviceName()
+	{
+		return this.deviceName;
+	}
+
+	/**
+	 * Get Product name.
+	 * @return String
+	 */
+	public String getProductName()
+	{
+		return this.productName;
+	}
+
+	
+	/**
+	 * Get Resource name.
 	 * @return String
 	 */
 	public String getResourceName()
@@ -98,7 +121,17 @@ public enum ResourceNameEnum
 	}
 	
 	/**
-	 * 
+	 * Get Resource type.
+	 * @return String
+	 */
+	public String getResourceType()
+	{
+		return this.resourceType;
+	}
+
+	
+	/**
+	 * Get Resource name chain.
 	 * @return List<String> The ordered list of Strings representing this
 	 * resource name split by '/'.
 	 */
@@ -113,5 +146,16 @@ public enum ResourceNameEnum
 		}
 		
 		return nameList;
+	}
+	
+	/**
+	 * 
+	 * @return boolean True if this resource is local to the GDA (meaning any
+	 * use of the resource is internal to the GDA); false if it's not (meaning
+	 * it's a resource used by the CDA).
+	 */
+	public boolean isLocalToGda()
+	{
+		return this.isLocalToGDA;
 	}
 }

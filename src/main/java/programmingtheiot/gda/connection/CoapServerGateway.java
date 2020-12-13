@@ -109,20 +109,23 @@ public class CoapServerGateway
 	}
 	
 	// private methods
+	/**
+	 * check if we have a parent resource
+	 * if no parent resource, add it in now (should be named "PIOT")
+	 * get the next resource name
+	 * @param resource
+	 */
 	private void createAndAddResourceChain(ResourceNameEnum resource)
 	{
 		List<String> resourceNames = resource.getResourceNameChain();
 		Queue<String> queue = new ArrayBlockingQueue<>(resourceNames.size());
 		queue.addAll(resourceNames);
-		// check if we have a parent resource
 		Resource parentResource = this.coapServer.getRoot();
-		// if no parent resource, add it in now (should be named "PIOT")
 		if (parentResource == null) {
 			parentResource = new GenericCoapResourceHandler(queue.poll());
 			this.coapServer.add(parentResource);
 		}
 		while (! queue.isEmpty()) {
-			// get the next resource name
 			String   resourceName = queue.poll();
 			Resource nextResource = parentResource.getChild(resourceName);
 			if (nextResource == null) {

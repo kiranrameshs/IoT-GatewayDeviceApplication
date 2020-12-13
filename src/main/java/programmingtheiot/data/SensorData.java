@@ -11,7 +11,7 @@ package programmingtheiot.data;
 import java.io.Serializable;
 
 /**
- * Shell representation of class for student implementation.
+ * 
  *
  */
 public class SensorData extends BaseIotData implements Serializable
@@ -35,13 +35,20 @@ public class SensorData extends BaseIotData implements Serializable
 		sensorType = DEFAULT_SENSOR_TYPE;
 	}
 	
+	public int getSensorType() {
+		return sensorType;
+	}
+
+	public void setSensorType(int sensorType) {
+		this.sensorType = sensorType;
+	}
+
 	public SensorData(int sensorType)
 	{
 		super();
 		value=0.0f;
 		this.sensorType = sensorType;
 	}
-	
 	
 	// public methods
 	
