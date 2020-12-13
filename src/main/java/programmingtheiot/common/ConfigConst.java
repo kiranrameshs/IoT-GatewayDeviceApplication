@@ -31,7 +31,7 @@ public class ConfigConst
 	public static final String DEFAULT_MQTT_SECURE_PROTOCOL = "ssl";
 	public static final int    DEFAULT_MQTT_PORT        = 1883;
 	public static final int    DEFAULT_MQTT_SECURE_PORT = 8883;
-	public static final int    DEFAULT_KEEP_ALIVE       = 60;
+	public static final int    DEFAULT_KEEP_ALIVE       = 600;
 	public static final int    DEFAULT_POLL_CYCLES      = 60;
 
 	public static final String PRODUCT_NAME = "ProgrammingIoT";
@@ -56,7 +56,8 @@ public class ConfigConst
 	public static final String MGMT_STATUS_MSG = "MgmtStatusMsg";
 	public static final String MGMT_STATUS_CMD = "MgmtStatusCmd";
 	public static final String SYSTEM_PERF_MSG = "SystemPerfMsg";
-
+	public static final String LED_ACTUATOR_MSG = "SystemPerfMsg"; 
+	public static final String DISPLAY_CMD     = "DisplayCmd";
 	public static final String CDA_ACTUATOR_CMD_MSG_RESOURCE = PRODUCT_NAME + "/" + CONSTRAINED_DEVICE + "/" + ACTUATOR_CMD;
 	public static final String CDA_ACTUATOR_RESPONSE_MSG_RESOURCE = PRODUCT_NAME + "/" + CONSTRAINED_DEVICE + "/" + ACTUATOR_RESPONSE;
 	public static final String CDA_MGMT_STATUS_MSG_RESOURCE  = PRODUCT_NAME + "/" + CONSTRAINED_DEVICE + "/" + MGMT_STATUS_MSG;
@@ -68,6 +69,8 @@ public class ConfigConst
 	public static final String GDA_MGMT_CMD_MSG_RESOURCE     = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + MGMT_STATUS_CMD;
 	public static final String GDA_SYSTEM_PERF_MSG_RESOURCE  = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + SYSTEM_PERF_MSG;
 	public static final String GDA_CLOUD_GATEWAY_MSG_RESOURCE  = PRODUCT_NAME + "/" + GATEWAY_DEVICE + "/" + CLOUD_SERVICE;
+	
+	public static final String CDA_DISPLAY_RESPONSE_RESOURCE = PRODUCT_NAME + "/" + CONSTRAINED_DEVICE + "/" + LED_ACTUATOR_MSG;
 
 	/*****
 	 * Configuration Sections, Keys and Defaults
@@ -141,13 +144,8 @@ public class ConfigConst
 	public static final String DISK_UTIL_NAME = "DiskUtil";
 	public static final String MEM_UTIL_NAME  = "MemUtil";
 	public static final String BASE_TOPIC_KEY = "baseTopic";
-	
-	
-	// constructors
-	
-	/**
-	 * 
-	 */
+	public static final String TEMP_SENSOR_NAME = "TempSensor";
+
 	private ConfigConst()
 	{
 	}

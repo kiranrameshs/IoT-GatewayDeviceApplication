@@ -37,8 +37,7 @@ public class RedisPersistenceAdapter implements IPersistenceClient
 		Logger.getLogger(RedisPersistenceAdapter.class.getName());
 	
 	// private var's
-	
-	
+
 	// constructors
 	
 	/**

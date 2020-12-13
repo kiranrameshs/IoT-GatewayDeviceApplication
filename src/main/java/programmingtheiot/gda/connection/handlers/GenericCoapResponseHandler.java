@@ -23,21 +23,14 @@ public class GenericCoapResponseHandler implements CoapHandler  {
 	
 	//overriding onLoad
 	@Override
+	/**
+	 * Check if the coAp response is null else get the options on load
+	 */
 	public void onLoad(CoapResponse response)
 	{
 		if (response != null) {
 			OptionSet options = response.getOptions();
-			
-//			_Logger.info("Processing CoAP response. Options: " + options);
-//			_Logger.info("Processing CoAP response. MID: " + response.advanced().getMID());
-//			_Logger.info("Processing CoAP response. Token: " + response.advanced().getTokenString());
-//			_Logger.info("Processing CoAP response. Code: " + response.getCode());
-			
-			// TODO: parse payload and notify listener
-//			_Logger.info(" --> Payload: " + response.getResponseText());
-			
 			if (this.dataMsgListener != null) {
-				// TODO: send listener the response
 			}
 		} else {
 			_Logger.warning("No CoAP response to process. Response is null.");
