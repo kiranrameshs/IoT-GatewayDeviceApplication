@@ -208,8 +208,10 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	public void connectComplete(boolean reconnect, String serverURI)
 	{
 		_Logger.info("MQTT connection successful (is reconnect = " + reconnect + "). Broker: " + serverURI);
+		 
 		int qos = 1;
 		try {
+			this.mqttClient.subscribe("/v1.6/devices/constraineddevice/displaycmd");
 			_Logger.log(Level.INFO, "inside connectComplete with topic name" + ResourceNameEnum.CDA_ACTUATOR_RESPONSE_RESOURCE.getResourceName());
 			this.mqttClient.subscribe("/v1.6/devices/gatewaydevice/mgmtstatusmsg");
 			_Logger.info("MQTT subscribe to display cmd successful");
@@ -255,11 +257,31 @@ public class MqttClientConnector implements IPubSubClient, MqttCallbackExtended
 	
 	@Override
 	/**
-	 * logger when there is a message
+	 * 
 	 */
 	public void messageArrived(String topic, MqttMessage msg) throws Exception
 	{
-		_Logger.info("Message Arrived from: "+topic+", message is"+ msg.toString());
+		System.out.println("MESSAGE ARRIVED WITH TOPIC: "+ topic);
+		_Logger.log(Level.INFO, "Message arrived on topic" + topic + " Messgae: " + msg.toString());
+		topic = topic.replace("/v1.6/devices/", "ProgrammingIoT/");
+		String display = "constraineddevice/displaycmd";
+		if(topic.contains(display)) {
+			topic = topic.replace(display, "ConstrainedDevice/DisplayCmd");
+			_Logger.info(topic);
+		}
+		String msgContent = new String(msg.getPayload());
+		try {
+			if(this.dataMsgListener != null) {
+				ResourceNameEnum resource = ResourceNameEnum.getEnumFromValue(topic);
+				this.dataMsgListener.handleIncomingMessage(resource, msgContent);
+				
+			}else {
+				_Logger.info("No Data message listener on topic:" + topic);
+			}
+		}
+		catch(Exception ex) {
+			_Logger.log(Level.WARNING,"Failed to handle arrived message: " + topic);
+		}
 	}
 
 	
