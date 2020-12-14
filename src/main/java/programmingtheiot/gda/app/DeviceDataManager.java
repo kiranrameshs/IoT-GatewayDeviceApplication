@@ -84,6 +84,8 @@ public class DeviceDataManager implements IDataMessageListener
 		this.enablePersistenceClient = configUtil.getBoolean(ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_PERSISTENCE_CLIENT_KEY);
 		this.humiditySensorFloor = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_FLOOR);
 		this.humiditySensorCeiling = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_CEILING);
+//		this.pressureSensorFloor = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_FLOOR);
+//		this.pressureSensorCeiling = configUtil.getInteger(ConfigConst.GATEWAY_DEVICE, ConfigConst.HUMIDITY_SENSOR_CEILING);
 		initConnections();
 		this.sysPerfManager = new SystemPerformanceManager();
 	}
@@ -151,8 +153,12 @@ public class DeviceDataManager implements IDataMessageListener
 			DataUtil dataUtil = DataUtil.getInstance();
 			try {
 				ActuatorData ad = dataUtil.jsonToActuatorData(msg);
+				ad.setActuatorType(100);
+				ad.setCommand(1);
 				handleIncomingDataAnalysis(resourceName,ad);
+				_Logger.info("Actuator type is "+ad.getActuatorType()+", value is: "+ad.getValue());
 			}
+			
 			catch(Exception ex) {
 				SystemStateData sd = dataUtil.jsonToSystemStateData(msg);
 				handleIncomingDataAnalysis(resourceName,sd);
@@ -333,7 +339,7 @@ public class DeviceDataManager implements IDataMessageListener
 		data.setActuatorType(100);
 		data.setCommand(1);
 		String jsonActuatorData = dataUtil.actuatorDataToJson(data);
-		this.mqttClient.connectClient();
+//		this.mqttClient.connectClient();
 		this.mqttClient.publishMessage(ResourceNameEnum.CDA_DISPLAY_RESPONSE_RESOURCE, jsonActuatorData, 1);
 	}
 
