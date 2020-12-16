@@ -56,20 +56,20 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>3.2.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-    <groupId>redis.clients</groupId>
-    <artifactId>jedis</artifactId>
-    <version>3.3.0</version>
-    <type>jar</type>
-    <scope>compile</scope>
-</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>redis.clients</groupId> -->
+<!-- 			<artifactId>jedis</artifactId> -->
+<!-- 			<version>3.2.0</version> -->
+<!-- 			<type>jar</type> -->
+<!-- 			<scope>compile</scope> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!--     <groupId>redis.clients</groupId> -->
+<!--     <artifactId>jedis</artifactId> -->
+<!--     <version>3.3.0</version> -->
+<!--     <type>jar</type> -->
+<!--     <scope>compile</scope> -->
+<!-- </dependency> -->
 <dependency>
   <groupId>com.ubidots</groupId>
   <artifactId>ubidots-java</artifactId>

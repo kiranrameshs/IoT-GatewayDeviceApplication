@@ -4,7 +4,7 @@
  * It is provided as a simple shell to guide the student and assist with
  * implementation for the Programming the Internet of Things exercises,
  * and designed to be modified by the student as needed.
- */ 
+ */
 
 package programmingtheiot.gda.system;
 
@@ -24,14 +24,12 @@ import programmingtheiot.gda.app.GatewayDeviceApp;
  * Shell representation of class for student implementation.
  * 
  */
-public class SystemPerformanceManager
-{
+public class SystemPerformanceManager {
 	// private var's
 	private int pollSecs = 30;
-	
-	private static final Logger _Logger =
-			Logger.getLogger(SystemPerformanceManager.class.getName());
-	
+
+	private static final Logger _Logger = Logger.getLogger(SystemPerformanceManager.class.getName());
+
 	private ScheduledExecutorService schedExecSvc = null;
 	private SystemCpuUtilTask cpuUtilTask = null;
 	private SystemMemUtilTask memUtilTask = null;
@@ -43,71 +41,64 @@ public class SystemPerformanceManager
 	private float memUtilPct;
 	// constructors
 
-	
-	
 	/**
 	 * Default.
 	 * 
 	 */
-	public SystemPerformanceManager()
-	{
+	public SystemPerformanceManager() {
 		this(ConfigConst.DEFAULT_POLL_CYCLES);
 	}
-	
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param pollSecs The number of seconds between each scheduled task poll.
 	 */
-	public SystemPerformanceManager(int pollSecs)
-	{
-		if(pollSecs>1 && pollSecs < Integer.MAX_VALUE) {
+	public SystemPerformanceManager(int pollSecs) {
+		if (pollSecs > 1 && pollSecs < Integer.MAX_VALUE) {
 			this.pollSecs = pollSecs;
 		}
 		this.schedExecSvc = Executors.newScheduledThreadPool(1);
 		this.cpuUtilTask = new SystemCpuUtilTask();
 		this.memUtilTask = new SystemMemUtilTask();
 		this.taskRunner = () -> {
-		    this.handleTelemetry();
+			this.handleTelemetry();
 		};
 	}
-	
-	
+
 	// public methods
-	
-	public void handleTelemetry()
-	{
+
+	public void handleTelemetry() {
 		cpuUtilPct = this.cpuUtilTask.getTelemetryValue();
 		memUtilPct = this.memUtilTask.getTelemetryValue();
-		_Logger.info("Handle telemetry results: cpuUtil="+cpuUtilPct+", memUtil="+memUtilPct);
+		_Logger.info("Handle telemetry results: cpuUtil=" + cpuUtilPct + ", memUtil=" + memUtilPct);
 	}
-	
-	public void setDataMessageListener(IDataMessageListener listener)
-	{
+
+	public void setDataMessageListener(IDataMessageListener listener) {
 	}
+
 	/**
-	 * Start Manager triggered by device data manager 
+	 * Start Manager triggered by device data manager
 	 */
-	public void startManager()
-	{
+	public void startManager() {
 		_Logger.info("SytemPerformanceManager is starting...");
-		if (! this.isStarted) {
-		    ScheduledFuture<?> futureTask = this.schedExecSvc.scheduleAtFixedRate(this.taskRunner, 0L, this.pollSecs, TimeUnit.SECONDS);
-		    this.isStarted = true;
+		if (!this.isStarted) {
+			ScheduledFuture<?> futureTask = this.schedExecSvc.scheduleAtFixedRate(this.taskRunner, 0L, this.pollSecs,
+					TimeUnit.SECONDS);
+			this.isStarted = true;
 		}
 	}
+
 	/**
-	 * Stop Manager triggered by device data manager 
+	 * Stop Manager triggered by device data manager
 	 */
-	public void stopManager()
-	{
+	public void stopManager() {
 		_Logger.info("SytemPerformanceManager is stopped.");
 		try {
 			this.schedExecSvc.shutdown();
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			_Logger.info("SytemPerformanceManager failed to stop");
 		}
 	}
-	
+
 }

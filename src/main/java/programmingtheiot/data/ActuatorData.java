@@ -4,7 +4,7 @@
  * It is provided as a simple shell to guide the student and assist with
  * implementation for the Programming the Internet of Things exercises,
  * and designed to be modified by the student as needed.
- */ 
+ */
 
 package programmingtheiot.data;
 
@@ -20,18 +20,17 @@ import programmingtheiot.common.ResourceNameEnum;
  * Actuator Data class
  *
  */
-public class ActuatorData extends BaseIotData implements Serializable
-{
+public class ActuatorData extends BaseIotData implements Serializable {
 	// static
 	public static final int DEFAULT_COMMAND = 0;
 	public static final int COMMAND_OFF = DEFAULT_COMMAND;
 	public static final int COMMAND_ON = 1;
-	
+
 	// private var's
-    private float val;
-    private int command;
-    private int actuatorType;
-    
+	private float val;
+	private int command;
+	private int actuatorType;
+
 	public int getActuatorType() {
 		return actuatorType;
 	}
@@ -44,48 +43,46 @@ public class ActuatorData extends BaseIotData implements Serializable
 	/**
 	 * Default constructor
 	 */
-	public ActuatorData()
-	{
+	public ActuatorData() {
 		super();
 		this.val = 0.0f;
-		this.command=DEFAULT_COMMAND;
+		this.command = DEFAULT_COMMAND;
 		this.actuatorType = 0;
 	}
-	
+
 	// public methods
 	/**
 	 * Set command (ON/OFF) of Actuator Data.
 	 */
-	public int getCommand()
-	{
+	public int getCommand() {
 		return this.command;
 	}
+
 	/**
 	 * Get Value of Actuator Data..
 	 */
-	public float getValue()
-	{
+	public float getValue() {
 		return this.val;
 	}
+
 	/**
 	 * Set command (ON/OFF) of Actuator Data..
 	 */
-	public void setCommand(int command)
-	{
+	public void setCommand(int command) {
 		this.command = command;
 	}
+
 	/**
 	 * Set Value of Actuator Data.
 	 */
-	public void setValue(float val)
-	{
+	public void setValue(float val) {
 		this.val = val;
 	}
+
 	/**
 	 * update the Actuator Data with all its attributes
 	 */
-	public void updateData(ActuatorData data)
-	{
+	public void updateData(ActuatorData data) {
 		super.setName(data.getName());
 		super.setStateData(data.getStateData());
 		super.setStatusCode(data.getStatusCode());
@@ -93,9 +90,8 @@ public class ActuatorData extends BaseIotData implements Serializable
 		this.setCommand(data.getCommand());
 	}
 
-	protected void handleUpdateData(BaseIotData data)
-	{
-		
+	protected void handleUpdateData(BaseIotData data) {
+
 	}
-	
+
 }

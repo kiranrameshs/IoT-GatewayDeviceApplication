@@ -137,6 +137,8 @@ public class ConfigConst
 	public static final String SMTP_PROP_ENABLE_TLS_KEY = "mail.smtp.starttls.enable";
 	public static final String HUMIDITY_SENSOR_FLOOR =    "humiditySimFloor";
 	public static final String HUMIDITY_SENSOR_CEILING =    "humiditySimCeiling";
+	public static final String TEMPERATURE_SENSOR_FLOOR =    "temperatureFloor";
+	public static final String TEMPERATURE_SENSOR_CEILING =    "temperatureCeiling";
 	public static final String SYS_PERF_DATA  = "SysPerfData";
 	public static final String SYS_STATE_DATA = "SysStateData";
 

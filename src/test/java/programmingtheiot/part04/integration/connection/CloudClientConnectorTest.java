@@ -5,7 +5,7 @@
  * found in the LICENSE file at the top level of this repository.
  * 
  * Copyright (c) 2020 by Andrew D. King
- */ 
+ */
 
 package programmingtheiot.part04.integration.connection;
 
@@ -28,78 +28,74 @@ import programmingtheiot.gda.connection.*;
 
 /**
  * This test case class contains very basic integration tests for
- * CloudClientConnector. It should not be considered complete,
- * but serve as a starting point for the student implementing
- * additional functionality within their Programming the IoT
- * environment.
+ * CloudClientConnector. It should not be considered complete, but serve as a
+ * starting point for the student implementing additional functionality within
+ * their Programming the IoT environment.
  *
  */
-public class CloudClientConnectorTest
-{
+public class CloudClientConnectorTest {
 	// static
-	
-	private static final Logger _Logger =
-		Logger.getLogger(CloudClientConnectorTest.class.getName());
-	
-	
+
+	private static final Logger _Logger = Logger.getLogger(CloudClientConnectorTest.class.getName());
+
 	// member var's
-	
+
 	private CloudClientConnector cloudClient = null;
-	
-	
+
 	// test setup methods
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception
-	{
+	public void setUp() throws Exception {
 		ConfigUtil.getInstance();
 		this.cloudClient = new CloudClientConnector();
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception
-	{
+	public void tearDown() throws Exception {
 	}
-	
+
 	// test methods
-	
+
 	/**
-	 * Test method for {@link programmingtheiot.gda.connection.CloudClientConnector#connectClient()}.
+	 * Test method for
+	 * {@link programmingtheiot.gda.connection.CloudClientConnector#connectClient()}.
 	 */
 	@Test
-	public void testConnectAndDisconnect()
-	{
-		int delay = ConfigUtil.getInstance().getInteger(ConfigConst.CLOUD_GATEWAY_SERVICE, ConfigConst.KEEP_ALIVE_KEY, ConfigConst.DEFAULT_KEEP_ALIVE);
-		
+	public void testConnectAndDisconnect() {
+		int delay = ConfigUtil.getInstance().getInteger(ConfigConst.CLOUD_GATEWAY_SERVICE, ConfigConst.KEEP_ALIVE_KEY,
+				ConfigConst.DEFAULT_KEEP_ALIVE);
+
 		assertTrue(this.cloudClient.connectClient());
-		
+
 		try {
 			Thread.sleep(delay * 1000 + 5000);
 		} catch (Exception e) {
 		}
-		
+
 		assertTrue(this.cloudClient.disconnectClient());
 		assertFalse(this.cloudClient.disconnectClient());
 	}
-	
+
 	/**
-	 * Test method for {@link programmingtheiot.gda.connection.CloudClientConnector#publishMessage(programmingtheiot.common.ResourceNameEnum, java.lang.String, int)}.
+	 * Test method for
+	 * {@link programmingtheiot.gda.connection.CloudClientConnector#publishMessage(programmingtheiot.common.ResourceNameEnum, java.lang.String, int)}.
+	 * implemented to test various cases if the trigger is properly implemented
 	 */
-	
+
 	@Test
-	public void testPublishAndSubscribe()
-	{
+	public void testPublishAndSubscribe() {
 		int qos = 2;
-		int delay = ConfigUtil.getInstance().getInteger(ConfigConst.CLOUD_GATEWAY_SERVICE, ConfigConst.KEEP_ALIVE_KEY, ConfigConst.DEFAULT_KEEP_ALIVE);
-		
+		int delay = ConfigUtil.getInstance().getInteger(ConfigConst.CLOUD_GATEWAY_SERVICE, ConfigConst.KEEP_ALIVE_KEY,
+				ConfigConst.DEFAULT_KEEP_ALIVE);
+
 		IDataMessageListener listener = new DefaultDataMessageListener();
-		
+
 		assertTrue(this.cloudClient.connectClient());
 		assertTrue(this.cloudClient.subscribeToEdgeEvents(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE));
 		assertTrue(this.cloudClient.subscribeToEdgeEvents(ResourceNameEnum.CDA_DISPLAY_RESPONSE_RESOURCE));
@@ -107,15 +103,15 @@ public class CloudClientConnectorTest
 			Thread.sleep(5000);
 		} catch (Exception e) {
 		}
-		
+
 		SensorData sensorData = new SensorData();
 		sensorData.setName(ConfigConst.TEMP_SENSOR_NAME);
-		sensorData.setValue(21.4f);
-		
+		sensorData.setValue(30f);
+
 		SensorData sensorData2 = new SensorData();
 		sensorData2.setName("pressuresensor");
-		sensorData2.setValue(2500f);
-		
+		sensorData2.setValue(750f);
+
 		this.cloudClient.sendEdgeDataToCloud(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, sensorData);
 		assertTrue(this.cloudClient.sendEdgeDataToCloud(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, sensorData2));
 
@@ -123,13 +119,11 @@ public class CloudClientConnectorTest
 
 		assertTrue(this.cloudClient.sendEdgeDataToCloud(ResourceNameEnum.GDA_SYSTEM_PERF_MSG_RESOURCE, sysPerfData));
 
-
-		
 		try {
 			Thread.sleep(5000);
 		} catch (Exception e) {
 		}
-		
+
 		assertTrue(this.cloudClient.unsubscribeFromEdgeEvents(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE));
 
 		try {
@@ -141,8 +135,8 @@ public class CloudClientConnectorTest
 			Thread.sleep(delay * 1000);
 		} catch (Exception e) {
 		}
-		
+
 		assertTrue(this.cloudClient.disconnectClient());
 	}
-	
+
 }

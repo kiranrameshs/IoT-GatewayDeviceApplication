@@ -78,6 +78,7 @@ public class GatewayDeviceApp {
 
 	/**
 	 * Stops the application.
+	 * 
 	 * @param code The exit code to pass to {@link System.exit()}
 	 */
 	public void stopApp(int code) {
@@ -95,6 +96,7 @@ public class GatewayDeviceApp {
 
 	/**
 	 * Load the config file.
+	 * 
 	 * @param configFile The name of the config file to load.
 	 */
 	private void initConfig(String configFile) {
