@@ -9,25 +9,23 @@ import org.eclipse.californium.core.coap.OptionSet;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.gda.connection.CoapClientConnector;
 
-public class GenericCoapResponseHandler implements CoapHandler  {
-	//Logger
-	private static final Logger _Logger =
-			Logger.getLogger(CoapClientConnector.class.getName());
-	
+public class GenericCoapResponseHandler implements CoapHandler {
+	// Logger
+	private static final Logger _Logger = Logger.getLogger(CoapClientConnector.class.getName());
+
 	private IDataMessageListener dataMsgListener;
 
-	//Constructor for GenericCoapResponseHandler
+	// Constructor for GenericCoapResponseHandler
 	public GenericCoapResponseHandler(IDataMessageListener dataMsgListener) {
-		this.dataMsgListener=dataMsgListener;
+		this.dataMsgListener = dataMsgListener;
 	}
-	
-	//overriding onLoad
+
+	// overriding onLoad
 	@Override
 	/**
 	 * Check if the coAp response is null else get the options on load
 	 */
-	public void onLoad(CoapResponse response)
-	{
+	public void onLoad(CoapResponse response) {
 		if (response != null) {
 			OptionSet options = response.getOptions();
 			if (this.dataMsgListener != null) {
@@ -37,11 +35,10 @@ public class GenericCoapResponseHandler implements CoapHandler  {
 		}
 	}
 
-	//overriding onError
+	// overriding onError
 	@Override
-	public void onError()
-	{
+	public void onError() {
 		_Logger.warning("Error processing CoAP response. Ignoring.");
 	}
-	
+
 }

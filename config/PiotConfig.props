@@ -62,7 +62,7 @@ enableCrypt    = False
 enableLogging           = True
 pollCycleSecs           = 60
 enableMqttClient        = True
-enableCoapServer        = True
+enableCoapServer        = False
 enableCloudClient       = True
 enableSmtpClient        = False
 enablePersistenceClient = False
@@ -73,9 +73,8 @@ testCdaDataPath = /tmp/cda-data
 # configurable limits for sensor simulation
 humiditySimFloor   = 35
 humiditySimCeiling = 45
-pressureSimFloor   = 990
+pressureSimFloor   = 800
 pressureSimCeiling = 1010
-tempSimFloor       = 18
-tempSimCeiling     = 22
-
+temperatureFloor   = 15
+temperatureCeiling = 23
 

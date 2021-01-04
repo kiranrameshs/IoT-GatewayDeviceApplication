@@ -4,7 +4,7 @@
  * It is provided as a simple shell to guide the student and assist with
  * implementation for the Programming the Internet of Things exercises,
  * and designed to be modified by the student as needed.
- */ 
+ */
 
 package programmingtheiot.gda.system;
 
@@ -15,61 +15,56 @@ import programmingtheiot.data.SensorData;
 /**
  * Base System Util Task
  */
-public abstract class BaseSystemUtilTask
-{
+public abstract class BaseSystemUtilTask {
 	// static
-	
-	private static final Logger _Logger =
-		Logger.getLogger(BaseSystemUtilTask.class.getName());
-	
-	
+
+	private static final Logger _Logger = Logger.getLogger(BaseSystemUtilTask.class.getName());
+
 	// private
 	private SensorData latestSensorData = null;
-	
+
 	// constructors
-	
-	public BaseSystemUtilTask()
-	{
+
+	public BaseSystemUtilTask() {
 		super();
 	}
-	
-	
+
 	// public methods
 	/**
-	 * Use respective getSystemUtil methods from derived classes to generate telemetry value
+	 * Use respective getSystemUtil methods from derived classes to generate
+	 * telemetry value
+	 * 
 	 * @return
-	 */ 
-	public SensorData generateTelemetry()
-	{
+	 */
+	public SensorData generateTelemetry() {
 		SensorData sd = new SensorData();
 		this.latestSensorData = sd;
 		this.latestSensorData.setValue(this.getSystemUtil());
 		return this.latestSensorData;
 	}
-	
+
 	/**
-	 * generate telemetry and form the latest sensor data 
+	 * generate telemetry and form the latest sensor data
+	 * 
 	 * @return
 	 */
-	public float getTelemetryValue()
-	{
-		if(this.latestSensorData == null) {
+	public float getTelemetryValue() {
+		if (this.latestSensorData == null) {
 			SensorData sd = this.generateTelemetry();
 			return sd.getValue();
-		}
-		else {
+		} else {
 			return this.latestSensorData.getValue();
 		}
 	}
-	
+
 	// protected methods
-	
+
 	/**
-	 * Template method definition. Sub-class will implement this to retrieve
-	 * the system utilization measure.
+	 * Template method definition. Sub-class will implement this to retrieve the
+	 * system utilization measure.
 	 * 
 	 * @return float
 	 */
 	protected abstract float getSystemUtil();
-	
+
 }
